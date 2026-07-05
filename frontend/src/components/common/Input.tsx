@@ -1,13 +1,21 @@
+import type { ChangeEvent } from "react";
+
 interface InputProps {
   label: string;
   type?: string;
   placeholder?: string;
+  value: string;
+  autoComplete?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Input({
   label,
   type = "text",
   placeholder,
+  value,
+  autoComplete = "off",
+  onChange,
 }: InputProps) {
   return (
     <div className="mb-6">
@@ -18,6 +26,9 @@ function Input({
       <input
         type={type}
         placeholder={placeholder}
+        value={value}
+        autoComplete={autoComplete}
+        onChange={onChange}
         className="
           w-full
           rounded-lg

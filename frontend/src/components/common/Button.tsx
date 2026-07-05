@@ -1,10 +1,15 @@
 interface ButtonProps {
   title: string;
+  type?: "button" | "submit";
 }
 
-function Button({ title }: ButtonProps) {
+function Button({
+  title,
+  type = "button",
+}: ButtonProps) {
   return (
     <button
+      type={type}
       className="
         w-full
         rounded-lg
