@@ -116,10 +116,20 @@ Verified the API endpoint, tested it with Postman, configured Axios correctly, a
   - DateSelector
 - Organized the task page into a modular component structure.
 
-### Status
+### Completed
 
-- ✅ Initial Task Board UI Completed
-- ⏳ Add Task Modal
-- ⏳ Task CRUD
-- ⏳ Drag & Drop
-- ⏳ Date Filtering
+- Created the `Task` model using Django ORM.
+- Added the Create Task API (`POST /api/tasks/`).
+- Added the Get Tasks API (`GET /api/tasks/list/`).
+- Successfully stored task data in the SQLite database.
+- Tested both APIs using Postman.
+
+### Challenges
+
+**Problem:**
+- I needed to verify whether the Task APIs were correctly storing and retrieving data from the SQLite database.
+
+**Solution:**
+- I tested the `POST /api/tasks/` and `GET /api/tasks/list/` endpoints using Postman.
+- I verified the API responses and checked the SQLite database to confirm that the task data was successfully stored and retrieved.
+- 
