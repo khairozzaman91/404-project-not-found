@@ -24,6 +24,7 @@
 | Email | Password |
 |--------|----------|
 | admin@404project.com | admin123 |
+| admin@404project.com | admin |Admin213 |
 
 ## Completed
 
