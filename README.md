@@ -103,3 +103,22 @@ The frontend could not communicate with the backend during login.
 
 **Solution**
 Verified the API endpoint, tested it with Postman, configured Axios correctly, and confirmed successful authentication.
+
+
+### Completed
+
+- Created the initial Task Board UI.
+- Built reusable components:
+  - Board
+  - Column
+  - TaskCard
+  - DateSelector
+- Organized the task page into a modular component structure.
+
+### Status
+
+- ✅ Initial Task Board UI Completed
+- ⏳ Add Task Modal
+- ⏳ Task CRUD
+- ⏳ Drag & Drop
+- ⏳ Date Filtering
