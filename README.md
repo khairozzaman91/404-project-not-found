@@ -18,6 +18,12 @@
 - Input
 - Button
 - LoginPage
+- 
+## Database
+
+| Email | Password |
+|--------|----------|
+| admin@404project.com | admin123 |
 
 ## Completed
 
@@ -49,11 +55,7 @@
 - SQLite
 - Postman
 
-## Database
 
-| Email | Password |
-|--------|----------|
-| admin@404project.com | admin123 |
 
 ## Completed
 
@@ -76,4 +78,28 @@
 - Inserted the admin record into SQLite.
 - Verified the API using Postman.
 
----
+
+### Completed
+
+- Connected the React login form with the Django Login API using Axios.
+- Implemented admin authentication using SQLite.
+- Redirected authenticated users to the Task Board.
+- Tested the login API using Postman.
+
+### Challenges & Solutions
+
+#### CORS Issue
+
+**Problem**
+React could not access the Django API due to CORS restrictions.
+
+**Solution**
+Installed and configured `django-cors-headers`, added the middleware, and allowed the frontend origin.
+
+#### Frontend & Backend Connection
+
+**Problem**
+The frontend could not communicate with the backend during login.
+
+**Solution**
+Verified the API endpoint, tested it with Postman, configured Axios correctly, and confirmed successful authentication.
