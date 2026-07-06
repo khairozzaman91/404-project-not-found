@@ -1,6 +1,7 @@
 import json
 
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Admin, Task
@@ -139,4 +140,50 @@ def get_tasks(request):
                 "message": str(e)
             },
             status=500
+        )
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@csrf_exempt
+def delete_task(request, task_id):
+ if request.method != "DELETE":
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Method not allowed",
+            },
+            status=405,
+        )
+
+ try:
+        task = get_object_or_404(Task, id=task_id)
+        task.delete()
+
+        return JsonResponse(
+            {
+                "success": True,
+                "message": "Task deleted successfully",
+            },
+            status=200,
+        )
+
+ except Exception as e:
+        return JsonResponse(
+            {
+                "success": False,
+                "message": str(e),
+            },
+            status=500,
         )
