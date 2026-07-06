@@ -22,3 +22,11 @@ export async function createTask(task: {
 
   return response.data;
 }
+
+export async function deleteTask(id: number) {
+  const response = await axios.delete(
+    `http://127.0.0.1:8000/api/tasks/${id}/`
+  );
+
+  return response.data;
+}

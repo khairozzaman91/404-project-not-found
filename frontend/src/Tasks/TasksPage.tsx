@@ -6,7 +6,7 @@ import TaskCard from "../components/task/TaskCard";
 import DateSelector from "../components/task/DateSelector";
 import AddTaskModal from "../components/task/AddTaskModal";
 
-import { getTasks } from "../services/task";
+import { getTasks, deleteTask } from "../services/task";
 
 interface Task {
   id: number;
@@ -25,6 +25,15 @@ function TasksPage() {
     try {
       const data = await getTasks();
       setTasks(data.tasks);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleDelete(id: number) {
+    try {
+      await deleteTask(id);
+      await loadTasks();
     } catch (error) {
       console.error(error);
     }
@@ -65,14 +74,15 @@ function TasksPage() {
 
       {/* Board */}
       <Board>
-
         <Column title="Todo">
           {tasks
             .filter((task) => task.status === "todo")
             .map((task) => (
               <TaskCard
                 key={task.id}
+                id={task.id}
                 title={task.title}
+                onDelete={handleDelete}
               />
             ))}
         </Column>
@@ -83,7 +93,9 @@ function TasksPage() {
             .map((task) => (
               <TaskCard
                 key={task.id}
+                id={task.id}
                 title={task.title}
+                onDelete={handleDelete}
               />
             ))}
         </Column>
@@ -94,11 +106,12 @@ function TasksPage() {
             .map((task) => (
               <TaskCard
                 key={task.id}
+                id={task.id}
                 title={task.title}
+                onDelete={handleDelete}
               />
             ))}
         </Column>
-
       </Board>
 
       {/* Modal */}
