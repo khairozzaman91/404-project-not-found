@@ -62,32 +62,40 @@ function TaskCard({
 
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div 
+          className="flex items-center gap-3"
+          onPointerDown={(e) => {
+            e.stopPropagation();
+          }}
+        >
 
-          {/* Edit */}
+          {/* Edit Button */}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(id);
-            }}
-            className="text-blue-600 hover:text-blue-800"
+            type="button"
+            onClick={() => onEdit(id)}
+            className="
+              text-blue-600
+              hover:text-blue-800
+            "
           >
             ✏️
           </button>
 
 
-          {/* Delete */}
+          {/* Delete Button */}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(id);
-            }}
-            className="text-red-600 hover:text-red-800"
+            type="button"
+            onClick={() => onDelete(id)}
+            className="
+              text-red-600
+              hover:text-red-800
+            "
           >
             🗑
           </button>
 
         </div>
+
 
       </div>
 
