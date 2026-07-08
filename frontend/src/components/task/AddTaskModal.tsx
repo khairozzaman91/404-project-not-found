@@ -1,58 +1,89 @@
-import { useState } from "react";
 
-import { createTask } from "../../services/task";
+import { useEffect, useState } from "react";
+
+import { createTask, updateTask } from "../../services/task";
+
+interface Task {
+  id: number;
+  title: string;
+  priority: string;
+  due_date: string;
+  tags: string;
+  status: string;
+}
 
 interface AddTaskModalProps {
   open: boolean;
   onClose: () => void;
   onTaskCreated: () => Promise<void>;
+  task?: Task | null;
 }
 
 function AddTaskModal({
   open,
   onClose,
   onTaskCreated,
+   task,
 }: AddTaskModalProps) {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("low");
   const [dueDate, setDueDate] = useState("");
   const [tags, setTags] = useState("");
 
+  useEffect(() => {
+    if (task) {
+      setTitle(task.title);
+      setPriority(task.priority);
+      setDueDate(task.due_date);
+      setTags(task.tags);
+    } else {
+      setTitle("");
+      setPriority("low");
+      setDueDate("");
+      setTags("");
+    }
+  }, [task, open]);
+
   async function handleSave() {
     try {
+     if (task) {
+      await updateTask(task.id, {
+        title,
+        priority,
+        due_date: dueDate,
+        tags,
+        status: task.status,
+       });
+     } else {
       await createTask({
         title,
         priority,
         due_date: dueDate,
         tags,
         status: "todo",
-      });
+       });
+     }
 
-      // Clear form
-      setTitle("");
-      setPriority("low");
-      setDueDate("");
-      setTags("");
+    setTitle("");
+    setPriority("low");
+    setDueDate("");
+    setTags("");
 
-      // Close modal
-      onClose();
-
-      // Reload board
-      await onTaskCreated();
-    } catch (error) {
-      console.error(error);
-    }
+    onClose();
+    await onTaskCreated();
+  } catch (error) {
+    console.error(error);
   }
-
+}
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40">
       <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
 
-        <h2 className="mb-6 text-2xl font-bold">
-          Create Task
-        </h2>
+       <h2 className="mb-6 text-2xl font-bold">
+         {task ? "Edit Task" : "Create Task"}
+         </h2>
 
         <div className="space-y-4">
 
