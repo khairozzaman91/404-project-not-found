@@ -158,3 +158,19 @@ Managing task movement between different Kanban columns while keeping the UI sta
 
 **Solution:**
 Implemented drag and drop functionality using `@dnd-kit/core`. Used draggable task cards and droppable columns. On drag completion, the task status is updated and synchronized with the backend API.
+
+
+### 2. Drag and Drop Conflict with Edit/Delete Actions
+
+**Challenge:**
+
+While implementing Kanban drag and drop using `@dnd-kit/core`, the entire task card became draggable. Because of this, clicking the Edit or Delete buttons was sometimes detected as a drag action instead of a button click.
+
+**Solution:**
+
+Stopped the drag event propagation from the action button area using pointer event handling. This allowed the task card to remain draggable while keeping Edit and Delete buttons fully functional.
+
+Implemented:
+- Drag and drop for task cards between columns.
+- Separate handling for card dragging and button actions.
+- Fixed event conflicts between draggable elements and clickable buttons.
