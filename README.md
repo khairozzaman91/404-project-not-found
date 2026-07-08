@@ -132,4 +132,29 @@ Verified the API endpoint, tested it with Postman, configured Axios correctly, a
 **Solution:**
 - I tested the `POST /api/tasks/` and `GET /api/tasks/list/` endpoints using Postman.
 - I verified the API responses and checked the SQLite database to confirm that the task data was successfully stored and retrieved.
-- 
+
+  ## Features
+
+### Task Management (Kanban Board)
+
+- User authentication with Django backend
+- Create, view, update, and delete tasks
+- Kanban board with three columns:
+  - To Do
+  - In Progress
+  - Done
+- Date-based task filtering
+- Drag and drop tasks between columns using dnd-kit
+- Task cards with priority and tags support
+- Backend persistence using Django ORM and SQLite
+
+
+## Challenges & Solutions
+
+### 1. Implementing Drag and Drop
+
+**Challenge:**
+Managing task movement between different Kanban columns while keeping the UI state synchronized with the backend.
+
+**Solution:**
+Implemented drag and drop functionality using `@dnd-kit/core`. Used draggable task cards and droppable columns. On drag completion, the task status is updated and synchronized with the backend API.
