@@ -95,7 +95,7 @@ def create_task(request):
             },
             status=500
         )
-    
+
 
 @csrf_exempt
 def get_tasks(request):
@@ -109,7 +109,12 @@ def get_tasks(request):
         )
 
     try:
-        tasks = Task.objects.all()
+        date = request.GET.get("date")
+
+        if date:
+            tasks = Task.objects.filter(due_date=date)
+        else:
+            tasks = Task.objects.all()
 
         data = []
 
@@ -141,24 +146,11 @@ def get_tasks(request):
             },
             status=500
         )
-    
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @csrf_exempt
 def delete_task(request, task_id):
- if request.method != "DELETE":
+    if request.method != "DELETE":
         return JsonResponse(
             {
                 "success": False,
@@ -167,7 +159,7 @@ def delete_task(request, task_id):
             status=405,
         )
 
- try:
+    try:
         task = get_object_or_404(Task, id=task_id)
         task.delete()
 
@@ -179,7 +171,49 @@ def delete_task(request, task_id):
             status=200,
         )
 
- except Exception as e:
+    except Exception as e:
+        return JsonResponse(
+            {
+                "success": False,
+                "message": str(e),
+            },
+            status=500,
+        )
+
+
+@csrf_exempt
+def update_task(request, task_id):
+    if request.method != "PUT":
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Method not allowed",
+            },
+            status=405,
+        )
+
+    try:
+        task = get_object_or_404(Task, id=task_id)
+
+        data = json.loads(request.body)
+
+        task.title = data.get("title", task.title)
+        task.priority = data.get("priority", task.priority)
+        task.due_date = data.get("due_date", task.due_date)
+        task.tags = data.get("tags", task.tags)
+        task.status = data.get("status", task.status)
+
+        task.save()
+
+        return JsonResponse(
+            {
+                "success": True,
+                "message": "Task updated successfully",
+            },
+            status=200,
+        )
+
+    except Exception as e:
         return JsonResponse(
             {
                 "success": False,

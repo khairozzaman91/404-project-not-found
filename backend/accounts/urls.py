@@ -5,6 +5,7 @@ from .views import (
     create_task,
     get_tasks,
     delete_task,
+    update_task,
 )
 
 urlpatterns = [
@@ -19,4 +20,10 @@ urlpatterns = [
         delete_task,
         name="delete_task",
     ),
+    path(
+    "tasks/<int:task_id>/update/",
+    update_task,
+    name="update_task",
+    ),
+
 ]

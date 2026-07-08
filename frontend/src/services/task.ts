@@ -41,10 +41,15 @@ export async function updateTask(
     status: string;
   }
 ) {
+  console.log("UPDATE ID:", id);
+  console.log("UPDATE DATA:", task);
+
   const response = await axios.put(
     `http://127.0.0.1:8000/api/tasks/${id}/update/`,
     task
   );
+
+  console.log("UPDATE RESPONSE:", response.data);
 
   return response.data;
 }

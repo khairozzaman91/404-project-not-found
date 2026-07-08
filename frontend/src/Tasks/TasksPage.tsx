@@ -8,8 +8,11 @@ import TaskCard from "../components/task/TaskCard";
 import DateSelector from "../components/task/DateSelector";
 import AddTaskModal from "../components/task/AddTaskModal";
 
-import { getTasks, deleteTask, updateTask } from "../services/task";
-
+import {
+  getTasks,
+  deleteTask,
+  updateTask,
+} from "../services/task";
 
 interface Task {
   id: number;
@@ -54,38 +57,51 @@ function TasksPage() {
     setSelectedTask(task);
     setOpen(true);
   }
+
   async function handleDragEnd(event: DragEndEvent) {
-  const { active, over } = event;
+    const { active, over } = event;
 
-  if (!over) return;
+    if (!over) return;
 
-  const taskId = Number(active.id);
-  const newStatus = over.id.toString();
+    const taskId = Number(active.id);
+    const newStatus = over.id.toString();
 
-  const task = tasks.find((t) => t.id === taskId);
+    const task = tasks.find((t) => t.id === taskId);
 
-  if (!task) return;
+    if (!task) return;
 
-  if (task.status === newStatus) return;
+    if (task.status === newStatus) return;
 
-  try {
-    await updateTask(taskId, {
-      title: task.title,
-      priority: task.priority,
-      due_date: task.due_date,
-      tags: task.tags,
-      status: newStatus,
-    });
+    try {
+      await updateTask(taskId, {
+        title: task.title,
+        priority: task.priority,
+        due_date: task.due_date,
+        tags: task.tags,
+        status: newStatus,
+      });
 
-    await loadTasks();
-  } catch (error) {
-    console.error(error);
+      await loadTasks();
+    } catch (error) {
+      console.error(error);
+    }
   }
-}
 
   useEffect(() => {
     loadTasks();
   }, [selectedDate]);
+
+  const todoTasks = tasks.filter(
+    (task) => task.status === "todo"
+  );
+
+  const inProgressTasks = tasks.filter(
+    (task) => task.status === "in_progress"
+  );
+
+  const doneTasks = tasks.filter(
+    (task) => task.status === "done"
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 p-8">
@@ -113,49 +129,69 @@ function TasksPage() {
       </div>
 
       <DndContext onDragEnd={handleDragEnd}>
-  <Board>
-        <Column id="todo" title="Todo">
-          {tasks
-            .filter((task) => task.status === "todo")
-            .map((task) => (
-              <TaskCard
-                key={task.id}
-                id={task.id}
-                title={task.title}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
-        </Column>
+        <Board>
 
-        <Column id="in_progress" title="In Progress">
-          {tasks
-            .filter((task) => task.status === "in_progress")
-            .map((task) => (
-              <TaskCard
-                key={task.id}
-                id={task.id}
-                title={task.title}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
-        </Column>
+          <Column id="todo" title="Todo">
+            {todoTasks.length === 0 ? (
+              <div className="rounded-lg border-2 border-dashed border-slate-300 py-10 text-center text-slate-500">
+                No tasks available
+              </div>
+            ) : (
+              todoTasks.map((task, index) => (
+                <TaskCard
+                  key={task.id}
+                  serial={index + 1}
+                  id={task.id}
+                  title={task.title}
+                  dueDate={task.due_date}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                />
+              ))
+            )}
+          </Column>
 
-        <Column id="done" title="Done">
-          {tasks
-            .filter((task) => task.status === "done")
-            .map((task) => (
-              <TaskCard
-                key={task.id}
-                id={task.id}
-                title={task.title}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
-        </Column>
-      </Board>
+          <Column id="in_progress" title="In Progress">
+            {inProgressTasks.length === 0 ? (
+              <div className="rounded-lg border-2 border-dashed border-slate-300 py-10 text-center text-slate-500">
+                No tasks available
+              </div>
+            ) : (
+              inProgressTasks.map((task, index) => (
+                <TaskCard
+                  key={task.id}
+                  serial={index + 1}
+                  id={task.id}
+                  title={task.title}
+                  dueDate={task.due_date}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                />
+              ))
+            )}
+          </Column>
+
+          <Column id="done" title="Done">
+            {doneTasks.length === 0 ? (
+              <div className="rounded-lg border-2 border-dashed border-slate-300 py-10 text-center text-slate-500">
+                No tasks available
+              </div>
+            ) : (
+              doneTasks.map((task, index) => (
+                <TaskCard
+                  key={task.id}
+                  serial={index + 1}
+                  id={task.id}
+                  title={task.title}
+                  dueDate={task.due_date}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                />
+              ))
+            )}
+          </Column>
+
+        </Board>
       </DndContext>
 
       <AddTaskModal
