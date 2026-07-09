@@ -345,3 +345,20 @@ Designed the UI in a modular way so each section (Image Viewer, Polygon List, Na
 3. Created dedicated annotation routes and registered them in the project's URL configuration.
 
 4. Verified both upload (`POST`) and retrieval (`GET`) endpoints using Postman before integrating the frontend.
+
+## Dynamic Image Loading & Viewer
+
+### Implemented
+- Connected the Annotation page with the Django backend.
+- Fetched uploaded images using the Image API.
+- Implemented image upload functionality from the frontend.
+- Displayed uploaded images as dynamic thumbnails.
+- Added image preview in the Image Viewer.
+- Automatically selected the first uploaded image.
+- Updated the image navigation counter dynamically.
+
+### Problem Faced
+Initially, thumbnails were rendered using static placeholder data, so newly uploaded images were not visible in the interface. The Image Viewer also displayed only placeholder content instead of the selected image.
+
+### Solution
+Integrated the frontend with the backend image APIs. Replaced the static thumbnail list with dynamically fetched data, introduced state management for the selected image, and refreshed the image list immediately after each upload. This ensured that uploaded images appeared instantly and could be previewed by selecting their thumbnails.
