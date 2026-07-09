@@ -1,17 +1,13 @@
-interface DateSelectorProps {
-  value: string;
-  onChange: (date: string) => void;
-}
+import { useDate } from "../../context/DateContext";
 
-function DateSelector({
-  value,
-  onChange,
-}: DateSelectorProps) {
+function DateSelector() {
+  const { selectedDate, setSelectedDate } = useDate();
+
   return (
     <input
       type="date"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
+      value={selectedDate}
+      onChange={(e) => setSelectedDate(e.target.value)}
       className="
         rounded-lg
         border

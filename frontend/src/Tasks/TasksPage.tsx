@@ -7,6 +7,7 @@ import Column from "../components/task/Column";
 import TaskCard from "../components/task/TaskCard";
 import DateSelector from "../components/task/DateSelector";
 import AddTaskModal from "../components/task/AddTaskModal";
+import { useDate } from "../context/DateContext";
 
 import {
   getTasks,
@@ -24,13 +25,13 @@ interface Task {
 }
 
 function TasksPage() {
-  const today = new Date().toISOString().split("T")[0];
-
   const [open, setOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [selectedDate, setSelectedDate] = useState(today);
+  const { selectedDate, setSelectedDate } = useDate();
 
+
+  
   async function loadTasks() {
     try {
       const data = await getTasks(selectedDate);
@@ -111,10 +112,7 @@ function TasksPage() {
         </h1>
 
         <div className="flex items-center gap-4">
-          <DateSelector
-            value={selectedDate}
-            onChange={setSelectedDate}
-          />
+          <DateSelector/>
 
           <button
             onClick={() => {

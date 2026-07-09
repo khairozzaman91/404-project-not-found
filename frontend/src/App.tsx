@@ -1,7 +1,12 @@
 import AppRoutes from "./routes/AppRoutes";
+import { DateProvider } from "./context/DateContext"
 
 function App() {
-  return <AppRoutes />;
+  return (
+    <DateProvider>
+      <AppRoutes />
+    </DateProvider>
+  );
 }
 
 export default App;
