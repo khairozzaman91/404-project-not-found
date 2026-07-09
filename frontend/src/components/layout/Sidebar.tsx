@@ -9,17 +9,17 @@ function Sidebar() {
   }
 
   return (
-    <aside className="flex h-screen w-60 flex-col border-r bg-white">
+    <aside className="flex h-screen w-70 flex-col border-r bg-white">
 
       {/* Logo */}
-      <div className="border-b p-5">
+      <div className="border-b p-4.5">
         <h1 className="text-xl font-bold text-slate-800">
           Welcome Dashboard 
         </h1>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-3">
+      <nav className="flex-1 p-4">
 
         <NavLink
           to="/tasks"

@@ -4,12 +4,18 @@ import { getImages, uploadImage } from "../../services/annotation";
 
 function AnnotationPage() {
   const [images, setImages] = useState<any[]>([]);
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const loadImages = async () => {
     try {
       const data = await getImages();
       setImages(data);
+
+      if (data.length > 0) {
+        setSelectedImage(data[0]);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -39,13 +45,13 @@ function AnnotationPage() {
       <div className="space-y-4">
 
         {/* Image Navigation */}
-        <div className="flex items-center justify-center gap-8 rounded-lg bg-white p-2 shadow">
+        <div className="flex items-center justify-center gap-8 rounded-lg bg-white p-1 shadow">
           <button className="rounded border px-4 py-2 hover:bg-slate-100">
             ← Previous
           </button>
 
           <h2 className="font-semibold text-slate-700">
-            Image 1 / {images.length}
+            Image {selectedImage ? images.findIndex(img => img.id === selectedImage.id) + 1 : 0} / {images.length}
           </h2>
 
           <button className="rounded border px-4 py-2 hover:bg-slate-100">
@@ -54,8 +60,7 @@ function AnnotationPage() {
         </div>
 
         {/* Upload & Save */}
-        <div className="flex items-center justify-between rounded-lg bg-white p-2 shadow">
-
+        <div className="flex items-center justify-between rounded-lg bg-white p-1 shadow">
           <>
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -79,12 +84,22 @@ function AnnotationPage() {
         </div>
 
         {/* Image Viewer + Polygon Panel */}
-        <div className="flex h-75 gap-4">
+        <div className="flex h-65 gap-4">
 
           <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
-            <div className="text-center font-semibold text-slate-500">
-              IMAGE VIEWER
-            </div>
+
+            {selectedImage ? (
+              <img
+                src={selectedImage.image}
+                alt="Selected"
+                className="h-full w-full rounded-lg object-contain"
+              />
+            ) : (
+              <div className="text-center font-semibold text-slate-500">
+                IMAGE VIEWER
+              </div>
+            )}
+
           </div>
 
           <div className="flex flex-[0.3] flex-col rounded-lg bg-white p-3 shadow">
@@ -120,12 +135,21 @@ function AnnotationPage() {
 
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
 
-            {Array.from({ length: 15 }).map((_, index) => (
+            {images.map((image) => (
               <div
-                key={index}
-                className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded border bg-slate-100 text-[10px] transition-colors hover:border-blue-500"
+                key={image.id}
+                onClick={() => setSelectedImage(image)}
+                className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
+                  selectedImage?.id === image.id
+                    ? "border-blue-600"
+                    : "border-slate-300"
+                }`}
               >
-                🖼 {index + 1}
+                <img
+                  src={image.image}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
               </div>
             ))}
 
