@@ -2,7 +2,7 @@
 
 ---
 
-# Feature 1: Login UI
+# Feature 1: 404 Project Not Found
 
 ## Technologies Used
 
@@ -372,8 +372,8 @@ Integrated the frontend with the backend image APIs. Replaced the static thumbna
 - Disabled Previous button on the first image and Next button on the last image to prevent invalid navigation.
 - Kept the thumbnail gallery synchronized with the currently selected image.
 
-  *** Challenges
-  - Initially, image navigation was only possible by clicking thumbnails. There was no convenient way to move sequentially through uploaded images, and keeping the selected image, image counter, and thumbnail gallery synchronized required proper state management.
+** Challenges
+ Initially, image navigation was only possible by clicking thumbnails. There was no convenient way to move sequentially through uploaded images, and keeping the selected image, image counter, and thumbnail gallery synchronized required proper state management.
 
-    *** Solution
-    - Implemented Previous and Next navigation by tracking the currently selected image. The image viewer, counter, and thumbnail gallery now update together, while boundary checks prevent navigation beyond the first or last uploaded image.
+** Solution
+ Implemented Previous and Next navigation by tracking the currently selected image. The image viewer, counter, and thumbnail gallery now update together, while boundary checks prevent navigation beyond the first or last uploaded image.
