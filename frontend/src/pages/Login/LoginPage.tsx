@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import AuthLayout from "../../layouts/AuthLayout/AuthLayout";
+import AuthLayout from "../../components/layout/AuthLayout";
 import Card from "../../components/common/Card";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
