@@ -19,7 +19,7 @@ function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 p-3">
 
         <NavLink
           to="/tasks"
