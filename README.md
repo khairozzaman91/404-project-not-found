@@ -258,3 +258,63 @@ As the project expanded with multiple pages, maintaining separate layouts for ea
 ### Solution
 
 Implemented a reusable `DashboardLayout` that includes a shared `Sidebar` and `Navbar`. Both the **Task Board** and **Annotation** pages now use the same layout while displaying dynamic page titles. This reduced code duplication, improved maintainability, and ensured a consistent user experience.
+
+
+# Annotation Dashboard
+
+## Features Implemented
+
+- Implemented the Annotation page using a reusable Dashboard Layout.
+- Added Previous and Next navigation controls for switching images.
+- Added Upload Image and Save Annotation action buttons.
+- Created a dedicated Image Viewer section for image annotation.
+- Designed a Polygon List panel to display saved polygons.
+- Added Delete and Clear buttons for polygon management.
+- Implemented a horizontal scrollable thumbnail slider for navigating multiple uploaded images.
+- Structured the layout to support future backend integration for image upload, image navigation, polygon drawing, and annotation persistence.
+
+---
+
+## Challenges Faced
+
+### 1. Annotation Page Layout
+
+Initially, arranging the Image Viewer, Polygon List, and action buttons while maintaining a clean and responsive layout was challenging. Different layout approaches resulted in inconsistent spacing and alignment.
+
+### Solution
+
+Refactored the page using a Flexbox-based layout, allowing the Image Viewer and Polygon List to remain aligned while keeping the interface responsive and easier to maintain.
+
+---
+
+### 2. Positioning Annotation Controls
+
+Finding the best position for the Delete and Clear buttons was difficult. Placing them inside the Polygon List or Image Viewer made the interface look cluttered and interrupted the annotation workflow.
+
+### Solution
+
+Moved the annotation action buttons below the Image Viewer and above the thumbnail slider, creating a clear separation between annotation actions and image navigation.
+
+---
+
+### 3. Thumbnail Navigation
+
+Designing a thumbnail section that could later support multiple uploaded images without affecting the overall layout required careful planning.
+
+### Solution
+
+Implemented a dedicated horizontal scrollable thumbnail slider. The current UI uses placeholder thumbnails, making it easy to replace them with dynamically loaded images from the backend later.
+
+---
+
+### 4. Future Backend Integration
+
+The Annotation page needed to support future backend functionality such as image uploads, image navigation, polygon storage, and annotation persistence.
+
+### Solution
+
+Designed the UI in a modular way so each section (Image Viewer, Polygon List, Navigation, and Thumbnail Slider) can be connected to backend APIs independently without major UI changes.
+
+
+
+
