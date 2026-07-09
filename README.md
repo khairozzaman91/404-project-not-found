@@ -316,5 +316,32 @@ The Annotation page needed to support future backend functionality such as image
 Designed the UI in a modular way so each section (Image Viewer, Polygon List, Navigation, and Thumbnail Slider) can be connected to backend APIs independently without major UI changes.
 
 
+## Annotation Backend
 
+### Completed
 
+- Created `annotation` Django app.
+- Added `Image` model using `ImageField`.
+- Configured media file handling (`MEDIA_URL` and `MEDIA_ROOT`).
+- Implemented image upload API (`POST /api/annotation/images/`).
+- Implemented image list API (`GET /api/annotation/images/`).
+- Registered image model in Django Admin.
+- Tested image upload and retrieval successfully using Postman.
+
+  ### Problems Faced
+
+1. Django raised an error when using `ImageField` because Pillow was not installed.
+
+2. Uploaded images were not accessible until media file serving was configured in Django.
+
+3. Initially, the annotation APIs were not reachable because the `annotation` app routes had not been included in the project URLs.
+
+### Solutions
+
+1. Installed the Pillow package to enable Django's `ImageField` support.
+
+2. Configured `MEDIA_URL` and `MEDIA_ROOT` in `settings.py` and served media files during development using `static()` in `config/urls.py`.
+
+3. Created dedicated annotation routes and registered them in the project's URL configuration.
+
+4. Verified both upload (`POST`) and retrieval (`GET`) endpoints using Postman before integrating the frontend.
