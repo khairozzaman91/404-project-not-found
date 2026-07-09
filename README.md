@@ -24,7 +24,7 @@
 | Email | Password |
 |--------|----------|
 | admin@404project.com | admin123 |
-| admin@404project.com | admin |Admin213 |
+
 
 ## Completed
 
@@ -234,3 +234,27 @@ Tasks did not have any visible ordering.
 **Solution**
 
 Added serial numbers (`#1`, `#2`, `#3`, ...) to improve readability and organization.
+
+
+
+## Dashboard Layout & Navigation
+
+### Completed
+
+- Created a reusable `DashboardLayout` component.
+- Added a reusable `Sidebar` for navigation.
+- Added a reusable `Navbar` with dynamic page titles.
+- Created the `AnnotationPage`.
+- Added routing between **Task Board** and **Image Annotation** pages.
+- Refactored the project structure for better scalability and maintainability.
+- Integrated the shared dashboard layout across multiple pages.
+
+### Challenge
+
+**Problem:**
+
+As the project expanded with multiple pages, maintaining separate layouts for each page resulted in duplicated code and inconsistent UI.
+
+### Solution
+
+Implemented a reusable `DashboardLayout` that includes a shared `Sidebar` and `Navbar`. Both the **Task Board** and **Annotation** pages now use the same layout while displaying dynamic page titles. This reduced code duplication, improved maintainability, and ensured a consistent user experience.
