@@ -24,7 +24,7 @@
 | Email | Password |
 |--------|----------|
 | admin@404project.com | admin123 |
-| admin@404project.com | admin |Admin213 |
+
 
 ## Completed
 
@@ -175,7 +175,86 @@ Implemented:
 - Separate handling for card dragging and button actions.
 - Fixed event conflicts between draggable elements and clickable buttons.
 
-## Updates
+## Completed
 
-- Added task serial numbers for improved task organization.
-- Added an empty state message ("No tasks available") when no tasks exist in a column.
+- Implemented task editing functionality.
+- Implemented React Context API to synchronize the selected date across components.
+- Added task serial numbers.
+- Added an empty state message ("No tasks available").
+- Improved task card UI and spacing.
+
+## Challenges & Solutions
+
+### 1. Task Edit Issue
+
+**Problem**
+
+After editing a task, the updated data was saved in the database, but the frontend continued showing the old data until the page was refreshed.
+
+**Solution**
+
+Called `loadTasks()` after every successful update so the latest data is fetched from the backend immediately.
+
+---
+
+### 2. Date State Synchronization
+
+**Problem**
+
+The selected date was managed using local component state (`useState`), making it difficult to share between multiple components.
+
+**Solution**
+
+Implemented React Context API using `useContext` and created a shared `DateContext` so both `TasksPage` and `DateSelector` use the same date state.
+
+---
+
+### 3. Empty State
+
+**Problem**
+
+When no tasks existed for a selected date, the task columns appeared empty.
+
+**Solution**
+
+Added a professional message:
+
+> **No tasks available**
+
+to clearly indicate there are no tasks for the selected date.
+
+---
+
+### 4. Task Organization
+
+**Problem**
+
+Tasks did not have any visible ordering.
+
+**Solution**
+
+Added serial numbers (`#1`, `#2`, `#3`, ...) to improve readability and organization.
+
+
+
+## Dashboard Layout & Navigation
+
+### Completed
+
+- Created a reusable `DashboardLayout` component.
+- Added a reusable `Sidebar` for navigation.
+- Added a reusable `Navbar` with dynamic page titles.
+- Created the `AnnotationPage`.
+- Added routing between **Task Board** and **Image Annotation** pages.
+- Refactored the project structure for better scalability and maintainability.
+- Integrated the shared dashboard layout across multiple pages.
+
+### Challenge
+
+**Problem:**
+
+As the project expanded with multiple pages, maintaining separate layouts for each page resulted in duplicated code and inconsistent UI.
+
+### Solution
+
+Implemented a reusable `DashboardLayout` that includes a shared `Sidebar` and `Navbar`. Both the **Task Board** and **Annotation** pages now use the same layout while displaying dynamic page titles. This reduced code duplication, improved maintainability, and ensured a consistent user experience.
