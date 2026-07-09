@@ -362,3 +362,18 @@ Initially, thumbnails were rendered using static placeholder data, so newly uplo
 
 ### Solution
 Integrated the frontend with the backend image APIs. Replaced the static thumbnail list with dynamically fetched data, introduced state management for the selected image, and refreshed the image list immediately after each upload. This ensured that uploaded images appeared instantly and could be previewed by selecting their thumbnails.
+
+** Image Previous & Next Navigation
+*** Implemented
+- Added Previous and Next navigation for uploaded images.
+- Enabled seamless navigation between images without reloading the page.
+- Updated the current image viewer dynamically when navigating.
+- Synchronized the image counter with the selected image (Image X / Total).
+- Disabled Previous button on the first image and Next button on the last image to prevent invalid navigation.
+- Kept the thumbnail gallery synchronized with the currently selected image.
+
+  *** Challenges
+  - Initially, image navigation was only possible by clicking thumbnails. There was no convenient way to move sequentially through uploaded images, and keeping the selected image, image counter, and thumbnail gallery synchronized required proper state management.
+
+    *** Solution
+    - Implemented Previous and Next navigation by tracking the currently selected image. The image viewer, counter, and thumbnail gallery now update together, while boundary checks prevent navigation beyond the first or last uploaded image.
