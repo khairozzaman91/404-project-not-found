@@ -40,23 +40,62 @@ function AnnotationPage() {
     }
   };
 
+  const handlePrevious = () => {
+  if (!selectedImage) return;
+
+  const currentIndex = images.findIndex(
+    (img) => img.id === selectedImage.id
+  );
+
+  if (currentIndex > 0) {
+    setSelectedImage(images[currentIndex - 1]);
+  }
+};
+
+const handleNext = () => {
+  if (!selectedImage) return;
+
+  const currentIndex = images.findIndex(
+    (img) => img.id === selectedImage.id
+  );
+
+  if (currentIndex < images.length - 1) {
+    setSelectedImage(images[currentIndex + 1]);
+  }
+};
+
   return (
     <DashboardLayout title="🖍 Image Annotation">
       <div className="space-y-4">
 
         {/* Image Navigation */}
         <div className="flex items-center justify-center gap-8 rounded-lg bg-white p-1 shadow">
-          <button className="rounded border px-4 py-2 hover:bg-slate-100">
+
+        <button
+            onClick={handlePrevious}
+            disabled={
+                !selectedImage ||
+                images.findIndex((img) => img.id === selectedImage.id) === 0
+            }
+            className="rounded border px-4 py-2 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
             ← Previous
-          </button>
+            </button>
 
-          <h2 className="font-semibold text-slate-700">
-            Image {selectedImage ? images.findIndex(img => img.id === selectedImage.id) + 1 : 0} / {images.length}
-          </h2>
+                <h2 className="font-semibold text-slate-700">
+                    Image {selectedImage ? images.findIndex(img => img.id === selectedImage.id) + 1 : 0} / {images.length}
+                </h2>
 
-          <button className="rounded border px-4 py-2 hover:bg-slate-100">
-            Next →
-          </button>
+                <button
+                    onClick={handleNext}
+                    disabled={
+                        !selectedImage ||
+                        images.findIndex((img) => img.id === selectedImage.id) === images.length - 1
+                    }
+                    className="rounded border px-4 py-2 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                    Next →
+                    </button>
         </div>
 
         {/* Upload & Save */}
