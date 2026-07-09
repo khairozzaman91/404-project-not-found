@@ -174,3 +174,8 @@ Implemented:
 - Drag and drop for task cards between columns.
 - Separate handling for card dragging and button actions.
 - Fixed event conflicts between draggable elements and clickable buttons.
+
+## Updates
+
+- Added task serial numbers for improved task organization.
+- Added an empty state message ("No tasks available") when no tasks exist in a column.
