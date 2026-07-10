@@ -398,3 +398,17 @@ Initially, the annotation page displayed images using a standard `<img>` element
 ### Solution
 
 Replaced the traditional image viewer with a React Konva canvas, allowing uploaded images to be rendered inside the canvas. Implemented point placement by capturing mouse click coordinates, establishing the foundation for polygon drawing while keeping the existing thumbnail gallery, image navigation, and layout unchanged.
+
+
+### Implemented
+
+- Added Draw Polygon mode to enable and disable annotation drawing.
+- Added a dedicated annotation toolbar for annotation actions.
+
+### Challenges
+
+Initially, users could start drawing immediately after opening the annotation page, which caused accidental annotations while navigating images.
+
+### Solution
+
+Introduced a dedicated Draw Polygon mode to control when drawing is allowed and added a dedicated annotation toolbar to organize annotation actions for a cleaner and more intuitive workflow.
