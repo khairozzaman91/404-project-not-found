@@ -12,21 +12,23 @@ import {
   Line,
 } from "react-konva";
 
-interface PolygonCanvasProps {
-  imageUrl?: string;
-  isDrawing: boolean;
-}
-
-      export interface PolygonCanvasRef {
-        finishPolygon: () => void;
-        undoPoint: () => void;
-        clearCurrentPolygon: () => void;
+      interface PolygonCanvasProps {
+        imageUrl?: string;
+        isDrawing: boolean;
+        onPolygonsChange?: (polygons: number[][]) => void;
       }
 
+      export interface PolygonCanvasRef {
+            finishPolygon: () => void;
+            undoPoint: () => void;
+            clearCurrentPolygon: () => void;
+            deletePolygon: (index: number) => void;
+          }
+
           const PolygonCanvas = forwardRef<
-          PolygonCanvasRef,
-          PolygonCanvasProps
-        >(({ imageUrl, isDrawing }, ref) => {
+            PolygonCanvasRef,
+            PolygonCanvasProps
+          >(({ imageUrl, isDrawing, onPolygonsChange }, ref) => {
           const [image, setImage] = useState<HTMLImageElement | null>(null);
           const [currentPoints, setCurrentPoints] = useState<number[]>([]);
           const [polygons, setPolygons] = useState<number[][]>([]);
@@ -42,10 +44,11 @@ interface PolygonCanvasProps {
             const img = new window.Image();
             img.src = imageUrl;
 
-            img.onload = () => {
+           img.onload = () => {
               setImage(img);
               setCurrentPoints([]);
               setPolygons([]);
+              onPolygonsChange?.([]);
             };
           }, [imageUrl]);
 
@@ -64,30 +67,45 @@ interface PolygonCanvasProps {
             ]);
           };
 
-          const finishPolygon = () => {
-            if (currentPoints.length < 6) return;
+            const finishPolygon = () => {
+              if (currentPoints.length < 6) return;
 
-            setPolygons((prev) => [
-              ...prev,
-              currentPoints,
-            ]);
+              setPolygons((prev) => {
+                const updated = [...prev, currentPoints];
 
-            setCurrentPoints([]);
-          };
+                onPolygonsChange?.(updated);
 
-          useImperativeHandle(ref, () => ({
-            finishPolygon,
+                return updated;
+              });
 
-            undoPoint() {
-              setCurrentPoints((prev) =>
-                prev.slice(0, prev.length - 2)
-              );
-            },
-
-            clearCurrentPolygon() {
               setCurrentPoints([]);
-            },
-          }));
+            };
+
+              useImperativeHandle(ref, () => ({
+                finishPolygon,
+
+                undoPoint() {
+                  setCurrentPoints((prev) =>
+                    prev.slice(0, prev.length - 2)
+                  );
+                },
+
+                clearCurrentPolygon() {
+                  setCurrentPoints([]);
+                },
+
+                deletePolygon(index: number) {
+                  setPolygons((prev) => {
+                    const updated = prev.filter((_, i) => i !== index);
+
+                    onPolygonsChange?.(updated);
+
+                    return updated;
+                  });
+                },
+              }));
+
+          
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -95,7 +113,7 @@ interface PolygonCanvasProps {
         width={600}
         height={300}
         onClick={handleStageClick}
-        // onDblClick={handleDoubleClick}
+        
       >
         <Layer>
           {image && (

@@ -14,6 +14,8 @@ function AnnotationPage() {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<PolygonCanvasRef>(null);
+  const [polygonList, setPolygonList] = useState<number[][]>([]);
+  const [selectedPolygon, setSelectedPolygon] = useState<number | null>(null);
 
   const loadImages = async () => {
     try {
@@ -56,6 +58,7 @@ function AnnotationPage() {
 
   if (currentIndex > 0) {
     setSelectedImage(images[currentIndex - 1]);
+    setPolygonList([]);
   }
 };
 
@@ -68,6 +71,7 @@ const handleNext = () => {
 
   if (currentIndex < images.length - 1) {
     setSelectedImage(images[currentIndex + 1]);
+    setPolygonList([]);
   }
 };
 
@@ -84,6 +88,19 @@ const handleDrawPolygon = () => {
 const handleUndoPoint = () => {
   canvasRef.current?.undoPoint();
 };
+
+const handleClearPolygon = () => {
+  canvasRef.current?.clearCurrentPolygon();
+};
+
+const handleDeletePolygon = () => {
+  if (selectedPolygon === null) return;
+
+  canvasRef.current?.deletePolygon(selectedPolygon);
+  setSelectedPolygon(null);
+};
+
+
 
   return (
     <DashboardLayout title="🖍 Image Annotation">
@@ -149,11 +166,12 @@ const handleUndoPoint = () => {
             {/* Image Viewer */}
             <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
-              <PolygonCanvas
-                ref={canvasRef}
-                imageUrl={selectedImage?.image}
-                isDrawing={isDrawing}
-              />
+                <PolygonCanvas
+                  ref={canvasRef}
+                  imageUrl={selectedImage?.image}
+                  isDrawing={isDrawing}
+                  onPolygonsChange={setPolygonList}
+                />
 
             </div>
 
@@ -164,13 +182,21 @@ const handleUndoPoint = () => {
                 Polygon List
               </h3>
 
-              <div className="flex-1 space-y-2 overflow-y-auto">
-
-                <div className="rounded border p-2 text-sm">
-                  ● Polygon #1
-                </div>
-
-              </div>
+                <div className="flex-1 space-y-2 overflow-y-auto">
+                    {polygonList.map((_, index) => (
+                            <div
+                              key={index}
+                              onClick={() => setSelectedPolygon(index)}
+                              className={`rounded border p-2 text-sm cursor-pointer ${
+                                selectedPolygon === index
+                                  ? "border-red-700 bg-red-50"
+                                  : "hover:bg-slate-100"
+                              }`}
+                            >
+                        ● Polygon #{index + 1}
+                      </div>
+                    ))}
+                  </div>
 
             </div>
 
@@ -198,13 +224,20 @@ const handleUndoPoint = () => {
                 ↩ Undo Point
               </button>
 
-            <button className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
-              ❌ Clear
-            </button>
+          <button
+            onClick={handleClearPolygon}
+            className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+          >
+            ❌ Clear
+          </button>
 
-            <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">
-              🗑 Delete Polygon
-            </button>
+          <button
+            onClick={handleDeletePolygon}
+            disabled={selectedPolygon === null}
+            className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            🗑 Delete Polygon
+          </button>
 
             <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">
               💾 Save Annotation
@@ -222,7 +255,7 @@ const handleUndoPoint = () => {
             {images.map((image) => (
               <div
                 key={image.id}
-                onClick={() => setSelectedImage(image)}
+                onClick={() =>{ setSelectedImage(image),setPolygonList([])}}
                 className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
                   selectedImage?.id === image.id
                     ? "border-blue-600"
