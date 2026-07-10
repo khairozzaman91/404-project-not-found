@@ -363,8 +363,8 @@ Initially, thumbnails were rendered using static placeholder data, so newly uplo
 ### Solution
 Integrated the frontend with the backend image APIs. Replaced the static thumbnail list with dynamically fetched data, introduced state management for the selected image, and refreshed the image list immediately after each upload. This ensured that uploaded images appeared instantly and could be previewed by selecting their thumbnails.
 
-** Image Previous & Next Navigation
-*** Implemented
+## Image Previous & Next Navigation
+### Implemented
 - Added Previous and Next navigation for uploaded images.
 - Enabled seamless navigation between images without reloading the page.
 - Updated the current image viewer dynamically when navigating.
@@ -372,8 +372,29 @@ Integrated the frontend with the backend image APIs. Replaced the static thumbna
 - Disabled Previous button on the first image and Next button on the last image to prevent invalid navigation.
 - Kept the thumbnail gallery synchronized with the currently selected image.
 
-** Challenges
- Initially, image navigation was only possible by clicking thumbnails. There was no convenient way to move sequentially through uploaded images, and keeping the selected image, image counter, and thumbnail gallery synchronized required proper state management.
+### Challenges
+Initially, image navigation was only possible by clicking thumbnails. There was no convenient way to move sequentially through uploaded images, and keeping the selected image, image counter, and thumbnail gallery synchronized required proper state management.
 
-** Solution
- Implemented Previous and Next navigation by tracking the currently selected image. The image viewer, counter, and thumbnail gallery now update together, while boundary checks prevent navigation beyond the first or last uploaded image.
+### Solution
+Implemented Previous and Next navigation by tracking the currently selected image. The image viewer, counter, and thumbnail gallery now update together, while boundary checks prevent navigation beyond the first or last uploaded image.
+
+
+ ## Annotation Module
+
+### Implemented
+
+- Integrated React Konva into the annotation page.
+- Rendered uploaded images inside the annotation canvas.
+- Added interactive point placement on the canvas as the foundation for polygon drawing.
+
+---
+
+### Challenges
+
+Initially, the annotation page displayed images using a standard `<img>` element, which made it impossible to draw annotations directly on top of the image. Replacing the image viewer with a canvas while preserving the existing layout, thumbnail navigation, and image switching required restructuring the component. Additionally, handling mouse interactions inside the canvas introduced new state management challenges.
+
+---
+
+### Solution
+
+Replaced the traditional image viewer with a React Konva canvas, allowing uploaded images to be rendered inside the canvas. Implemented point placement by capturing mouse click coordinates, establishing the foundation for polygon drawing while keeping the existing thumbnail gallery, image navigation, and layout unchanged.
