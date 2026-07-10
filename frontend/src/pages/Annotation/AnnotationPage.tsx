@@ -3,9 +3,12 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import { getImages, uploadImage } from "../../services/annotation";
 import PolygonCanvas from "../../components/annotation/PolygonCanvas";
 
+
 function AnnotationPage() {
   const [images, setImages] = useState<any[]>([]);
   const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -129,7 +132,10 @@ const handleNext = () => {
             {/* Image Viewer */}
             <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
-              <PolygonCanvas imageUrl={selectedImage?.image} />
+              <PolygonCanvas
+                  imageUrl={selectedImage?.image}
+                  isDrawing={isDrawing}
+                />
 
             </div>
 
@@ -153,16 +159,37 @@ const handleNext = () => {
           </div>
 
         {/* Delete & Clear Buttons */}
-        <div className="flex gap-2">
-          <button className="w-32 rounded-lg bg-red-600 py-2 text-xs text-white hover:bg-red-700">
-            🗑 Delete
-          </button>
+       {/* Annotation Toolbar */}
+          <div className="flex flex-wrap gap-2 rounded-lg bg-white p-3 shadow">
 
-          <button className="w-32 rounded-lg bg-slate-700 py-2 text-xs text-white hover:bg-slate-800">
-            ❌ Clear
-          </button>
-        </div>
+             <button
+              onClick={() => setIsDrawing((prev) => !prev)}
+              className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
+                isDrawing
+                  ? "bg-indigo-800"
+                  : "bg-indigo-600 hover:bg-indigo-700"
+              }`}
+            >
+              {isDrawing ? "✏️ Drawing..." : "🖊 Draw Polygon"}
+            </button>
 
+            <button className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600">
+              ↩ Undo Point
+            </button>
+
+            <button className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
+              ❌ Clear
+            </button>
+
+            <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">
+              🗑 Delete Polygon
+            </button>
+
+            <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">
+              💾 Save Annotation
+            </button>
+
+          </div>
         {/* Images Slider */}
         <div className="rounded-lg bg-white p-3 shadow">
           <h3 className="mb-3 text-sm font-semibold">

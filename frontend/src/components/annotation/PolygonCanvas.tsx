@@ -9,12 +9,16 @@ import {
 
 interface PolygonCanvasProps {
   imageUrl?: string;
+  isDrawing: boolean;
 }
 
-function PolygonCanvas({ imageUrl }: PolygonCanvasProps) {
-  const [image, setImage] = useState<HTMLImageElement | null>(null);
-  const [points, setPoints] = useState<number[]>([]);
-  const [isClosed, setIsClosed] = useState(false);
+    function PolygonCanvas({
+      imageUrl,
+      isDrawing,
+    }: PolygonCanvasProps)  {
+      const [image, setImage] = useState<HTMLImageElement | null>(null);
+      const [points, setPoints] = useState<number[]>([]);
+      const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
     if (!imageUrl) {
@@ -34,20 +38,22 @@ function PolygonCanvas({ imageUrl }: PolygonCanvasProps) {
     };
   }, [imageUrl]);
 
-  const handleStageClick = (e: any) => {
-    if (isClosed) return;
+        const handleStageClick = (e: any) => {
+        
+          if (!isDrawing) return;
+          if (isClosed) return;
 
-    const stage = e.target.getStage();
-    const pointer = stage.getPointerPosition();
+          const stage = e.target.getStage();
+          const pointer = stage.getPointerPosition();
 
-    if (!pointer) return;
+          if (!pointer) return;
 
-    setPoints((prev) => [
-      ...prev,
-      pointer.x,
-      pointer.y,
-    ]);
-  };
+          setPoints((prev) => [
+            ...prev,
+            pointer.x,
+            pointer.y,
+          ]);
+        };
 
   const handleDoubleClick = () => {
     // Minimum 3 points required
@@ -59,8 +65,8 @@ function PolygonCanvas({ imageUrl }: PolygonCanvasProps) {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <Stage
-        width={700}
-        height={400}
+        width={600}
+        height={300}
         onClick={handleStageClick}
         onDblClick={handleDoubleClick}
       >
