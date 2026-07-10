@@ -6,6 +6,7 @@ import {
   getImages,
   uploadImage,
   saveAnnotation,
+  getAnnotations,
 } from "../../services/annotation";
 
 
@@ -37,6 +38,14 @@ function AnnotationPage() {
     loadImages();
   }, []);
 
+
+  useEffect(() => {
+  if (selectedImage) {
+    loadAnnotations(selectedImage.id);
+  }
+}, [selectedImage]);
+
+
   const handleUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -61,7 +70,7 @@ function AnnotationPage() {
 
   if (currentIndex > 0) {
     setSelectedImage(images[currentIndex - 1]);
-    setPolygonList([]);
+    
   }
 };
 
@@ -74,7 +83,7 @@ const handleNext = () => {
 
   if (currentIndex < images.length - 1) {
     setSelectedImage(images[currentIndex + 1]);
-    setPolygonList([]);
+    
   }
 };
 
@@ -126,6 +135,19 @@ const handleSaveAnnotation = async () => {
     alert("Failed to save annotations.");
   }
 };
+
+
+    const loadAnnotations = async (imageId: number) => {
+      try {
+        const data = await getAnnotations(imageId);
+
+        setPolygonList(
+          data.map((item: any) => item.points)
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
   return (
     <DashboardLayout title="🖍 Image Annotation">
       <div className="space-y-4">
@@ -193,12 +215,13 @@ const handleSaveAnnotation = async () => {
             {/* Image Viewer */}
             <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
-                <PolygonCanvas
-                  ref={canvasRef}
-                  imageUrl={selectedImage?.image}
-                  isDrawing={isDrawing}
-                  onPolygonsChange={setPolygonList}
-                />
+              <PolygonCanvas
+                ref={canvasRef}
+                imageUrl={selectedImage?.image}
+                isDrawing={isDrawing}
+                polygons={polygonList}
+                onPolygonsChange={setPolygonList}
+              />
 
             </div>
 
@@ -292,7 +315,7 @@ const handleSaveAnnotation = async () => {
             {images.map((image) => (
               <div
                 key={image.id}
-                onClick={() =>{ setSelectedImage(image),setPolygonList([])}}
+                onClick={() => setSelectedImage(image)}
                 className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
                   selectedImage?.id === image.id
                     ? "border-blue-600"

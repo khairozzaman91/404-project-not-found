@@ -15,7 +15,9 @@ import {
       interface PolygonCanvasProps {
         imageUrl?: string;
         isDrawing: boolean;
+        polygons?: number[][];
         onPolygonsChange?: (polygons: number[][]) => void;
+        
       }
 
       export interface PolygonCanvasRef {
@@ -30,19 +32,19 @@ import {
           const PolygonCanvas = forwardRef<
             PolygonCanvasRef,
             PolygonCanvasProps
-          >(({ imageUrl, isDrawing, onPolygonsChange }, ref) => {
+          >(({ imageUrl, isDrawing,polygons: externalPolygons = [], onPolygonsChange }, ref) => {
           const [image, setImage] = useState<HTMLImageElement | null>(null);
           const [currentPoints, setCurrentPoints] = useState<number[]>([]);
-          const [polygons, setPolygons] = useState<number[][]>([]);
+          const [canvasPolygons, setCanvasPolygons] = useState<number[][]>([]);
           const [scale, setScale] = useState(1);
 
           useEffect(() => {
-            if (!imageUrl) {
-              setImage(null);
-              setCurrentPoints([]);
-              setPolygons([]);
-              return;
-            }
+                if (!imageUrl) {
+                  setImage(null);
+                  setCurrentPoints([]);
+                  setCanvasPolygons([]);
+                  return;
+                }
 
             const img = new window.Image();
             img.src = imageUrl;
@@ -50,10 +52,14 @@ import {
            img.onload = () => {
               setImage(img);
               setCurrentPoints([]);
-              setPolygons([]);
-              onPolygonsChange?.([]);
+              setCanvasPolygons([]);
+              
             };
+
           }, [imageUrl]);
+          useEffect(() => {
+              setCanvasPolygons(externalPolygons);
+            }, [externalPolygons]);
 
           const handleStageClick = (e: any) => {
             if (!isDrawing) return;
@@ -73,7 +79,7 @@ import {
             const finishPolygon = () => {
               if (currentPoints.length < 6) return;
 
-              setPolygons((prev) => {
+              setCanvasPolygons((prev) => {
                 const updated = [...prev, currentPoints];
 
                 onPolygonsChange?.(updated);
@@ -98,7 +104,7 @@ import {
                         },
 
                         deletePolygon(index: number) {
-                          setPolygons((prev) => {
+                          setCanvasPolygons((prev) => {
                             const updated = prev.filter((_, i) => i !== index);
 
                             onPolygonsChange?.(updated);
@@ -140,7 +146,7 @@ import {
                 />
               )}
 
-              {polygons.map((polygon, index) => (
+             {canvasPolygons.map((polygon, index) => (
                 <Line
                   key={index}
                   points={polygon}
