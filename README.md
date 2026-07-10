@@ -443,3 +443,12 @@ Moved polygon completion from double-click to a dedicated toolbar action.
   - Reused the exposed undoPoint() method through forwardRef and useImperativeHandle.
   - riggered the undo action from the parent component using canvasRef.
   - Limited the undo operation to the active polygon, ensuring previously completed polygons remain unchanged
+
+
+## Problem:
+
+Zooming the annotation canvas caused the image to shift away from the center because scaling was applied directly to the stage.
+
+## Solution:
+
+Moved scaling logic to the canvas layer and adjusted positioning to keep the image centered during zoom operations. Added zoom in and zoom out controls for easier annotation.
