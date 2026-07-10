@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import {
   Stage,
   Layer,
@@ -12,55 +17,77 @@ interface PolygonCanvasProps {
   isDrawing: boolean;
 }
 
-    function PolygonCanvas({
-      imageUrl,
-      isDrawing,
-    }: PolygonCanvasProps)  {
-      const [image, setImage] = useState<HTMLImageElement | null>(null);
-      const [points, setPoints] = useState<number[]>([]);
-      const [isClosed, setIsClosed] = useState(false);
+      export interface PolygonCanvasRef {
+        finishPolygon: () => void;
+        undoPoint: () => void;
+        clearCurrentPolygon: () => void;
+      }
 
-  useEffect(() => {
-    if (!imageUrl) {
-      setImage(null);
-      setPoints([]);
-      setIsClosed(false);
-      return;
-    }
+          const PolygonCanvas = forwardRef<
+          PolygonCanvasRef,
+          PolygonCanvasProps
+        >(({ imageUrl, isDrawing }, ref) => {
+          const [image, setImage] = useState<HTMLImageElement | null>(null);
+          const [currentPoints, setCurrentPoints] = useState<number[]>([]);
+          const [polygons, setPolygons] = useState<number[][]>([]);
 
-    const img = new window.Image();
-    img.src = imageUrl;
+          useEffect(() => {
+            if (!imageUrl) {
+              setImage(null);
+              setCurrentPoints([]);
+              setPolygons([]);
+              return;
+            }
 
-    img.onload = () => {
-      setImage(img);
-      setPoints([]);
-      setIsClosed(false);
-    };
-  }, [imageUrl]);
+            const img = new window.Image();
+            img.src = imageUrl;
 
-        const handleStageClick = (e: any) => {
-        
-          if (!isDrawing) return;
-          if (isClosed) return;
+            img.onload = () => {
+              setImage(img);
+              setCurrentPoints([]);
+              setPolygons([]);
+            };
+          }, [imageUrl]);
 
-          const stage = e.target.getStage();
-          const pointer = stage.getPointerPosition();
+          const handleStageClick = (e: any) => {
+            if (!isDrawing) return;
 
-          if (!pointer) return;
+            const stage = e.target.getStage();
+            const pointer = stage.getPointerPosition();
 
-          setPoints((prev) => [
-            ...prev,
-            pointer.x,
-            pointer.y,
-          ]);
-        };
+            if (!pointer) return;
 
-  const handleDoubleClick = () => {
-    // Minimum 3 points required
-    if (points.length >= 6) {
-      setIsClosed(true);
-    }
-  };
+            setCurrentPoints((prev) => [
+              ...prev,
+              pointer.x,
+              pointer.y,
+            ]);
+          };
+
+          const finishPolygon = () => {
+            if (currentPoints.length < 6) return;
+
+            setPolygons((prev) => [
+              ...prev,
+              currentPoints,
+            ]);
+
+            setCurrentPoints([]);
+          };
+
+          useImperativeHandle(ref, () => ({
+            finishPolygon,
+
+            undoPoint() {
+              setCurrentPoints((prev) =>
+                prev.slice(0, prev.length - 2)
+              );
+            },
+
+            clearCurrentPolygon() {
+              setCurrentPoints([]);
+            },
+          }));
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -68,35 +95,45 @@ interface PolygonCanvasProps {
         width={600}
         height={300}
         onClick={handleStageClick}
-        onDblClick={handleDoubleClick}
+        // onDblClick={handleDoubleClick}
       >
         <Layer>
           {image && (
-            <KonvaImage
-              image={image}
-              width={700}
-              height={400}
-            />
+              <KonvaImage
+                image={image}
+                width={600}
+                height={300}
+                listening={false}
+              />
           )}
 
-          {points.length >= 2 && (
-            <Line
-              points={points}
-              closed={isClosed}
-              stroke="red"
-              strokeWidth={2}
-              fill={isClosed ? "rgba(255,0,0,0.25)" : undefined}
-            />
-          )}
+          {polygons.map((polygon, index) => (
+                <Line
+                  key={index}
+                  points={polygon}
+                  closed
+                  stroke="red"
+                  strokeWidth={2}
+                  fill="rgba(255,0,0,0.25)"
+                />
+              ))}
 
-          {points.map((_, index) => {
+              {currentPoints.length >= 2 && (
+                <Line
+                  points={currentPoints}
+                  stroke="red"
+                  strokeWidth={2}
+                />
+              )}
+
+          {currentPoints.map((_, index) => {
             if (index % 2 !== 0) return null;
 
             return (
               <Circle
                 key={index}
-                x={points[index]}
-                y={points[index + 1]}
+                x={currentPoints[index]}
+                y={currentPoints[index + 1]}
                 radius={4}
                 fill="red"
               />
@@ -106,6 +143,6 @@ interface PolygonCanvasProps {
       </Stage>
     </div>
   );
-}
+})
 
 export default PolygonCanvas;

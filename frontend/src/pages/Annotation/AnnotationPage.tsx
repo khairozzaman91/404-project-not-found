@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { getImages, uploadImage } from "../../services/annotation";
 import PolygonCanvas from "../../components/annotation/PolygonCanvas";
+import type { PolygonCanvasRef } from "../../components/annotation/PolygonCanvas";
+
+
 
 
 function AnnotationPage() {
@@ -9,8 +12,8 @@ function AnnotationPage() {
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<PolygonCanvasRef>(null);
 
   const loadImages = async () => {
     try {
@@ -66,6 +69,20 @@ const handleNext = () => {
   if (currentIndex < images.length - 1) {
     setSelectedImage(images[currentIndex + 1]);
   }
+};
+
+const handleDrawPolygon = () => {
+  if (!isDrawing) {
+    setIsDrawing(true);
+    return;
+  }
+
+  canvasRef.current?.finishPolygon();
+  setIsDrawing(false);
+};
+
+const handleUndoPoint = () => {
+  canvasRef.current?.undoPoint();
 };
 
   return (
@@ -133,9 +150,10 @@ const handleNext = () => {
             <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
               <PolygonCanvas
-                  imageUrl={selectedImage?.image}
-                  isDrawing={isDrawing}
-                />
+                ref={canvasRef}
+                imageUrl={selectedImage?.image}
+                isDrawing={isDrawing}
+              />
 
             </div>
 
@@ -158,24 +176,27 @@ const handleNext = () => {
 
           </div>
 
-        {/* Delete & Clear Buttons */}
+       
        {/* Annotation Toolbar */}
           <div className="flex flex-wrap gap-2 rounded-lg bg-white p-3 shadow">
 
-             <button
-              onClick={() => setIsDrawing((prev) => !prev)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
-                isDrawing
-                  ? "bg-indigo-800"
-                  : "bg-indigo-600 hover:bg-indigo-700"
-              }`}
-            >
-              {isDrawing ? "✏️ Drawing..." : "🖊 Draw Polygon"}
-            </button>
+            <button
+                onClick={handleDrawPolygon}
+                className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
+                  isDrawing
+                    ? "bg-indigo-800"
+                    : "bg-indigo-600 hover:bg-indigo-700"
+                }`}
+              >
+                {isDrawing ? "✅ Finish Polygon" : "🖊 Draw Polygon"}
+              </button>
 
-            <button className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600">
-              ↩ Undo Point
-            </button>
+             <button
+                onClick={handleUndoPoint}
+                className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600"
+              >
+                ↩ Undo Point
+              </button>
 
             <button className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
               ❌ Clear
