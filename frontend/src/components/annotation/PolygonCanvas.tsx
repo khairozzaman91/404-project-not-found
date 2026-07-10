@@ -23,6 +23,8 @@ import {
             undoPoint: () => void;
             clearCurrentPolygon: () => void;
             deletePolygon: (index: number) => void;
+            zoomIn: () => void;
+            zoomOut: () => void;
           }
 
           const PolygonCanvas = forwardRef<
@@ -32,6 +34,7 @@ import {
           const [image, setImage] = useState<HTMLImageElement | null>(null);
           const [currentPoints, setCurrentPoints] = useState<number[]>([]);
           const [polygons, setPolygons] = useState<number[][]>([]);
+          const [scale, setScale] = useState(1);
 
           useEffect(() => {
             if (!imageUrl) {
@@ -81,51 +84,63 @@ import {
               setCurrentPoints([]);
             };
 
-              useImperativeHandle(ref, () => ({
-                finishPolygon,
+            useImperativeHandle(ref, () => ({
+                        finishPolygon,
 
-                undoPoint() {
-                  setCurrentPoints((prev) =>
-                    prev.slice(0, prev.length - 2)
-                  );
-                },
+                        undoPoint() {
+                          setCurrentPoints((prev) =>
+                            prev.slice(0, prev.length - 2)
+                          );
+                        },
 
-                clearCurrentPolygon() {
-                  setCurrentPoints([]);
-                },
+                        clearCurrentPolygon() {
+                          setCurrentPoints([]);
+                        },
 
-                deletePolygon(index: number) {
-                  setPolygons((prev) => {
-                    const updated = prev.filter((_, i) => i !== index);
+                        deletePolygon(index: number) {
+                          setPolygons((prev) => {
+                            const updated = prev.filter((_, i) => i !== index);
 
-                    onPolygonsChange?.(updated);
+                            onPolygonsChange?.(updated);
 
-                    return updated;
-                  });
-                },
-              }));
+                            return updated;
+                          });
+                        },
+
+                        zoomIn() {
+                          setScale((prev) => Math.min(prev + 0.2, 3));
+                        },
+
+                        zoomOut() {
+                          setScale((prev) => Math.max(prev - 0.2, 0.5));
+                        },
+                      }));
 
           
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <Stage
-        width={600}
-        height={300}
-        onClick={handleStageClick}
-        
-      >
-        <Layer>
-          {image && (
-              <KonvaImage
-                image={image}
-                width={600}
-                height={300}
-                listening={false}
-              />
-          )}
+          <Stage
+            width={600}
+            height={300}
+            onClick={handleStageClick}
+          >
+            <Layer
+              scaleX={scale}
+              scaleY={scale}
+              x={(600 - 600 * scale) / 2}
+              y={(300 - 300 * scale) / 2}
+            >
+              {image && (
+                <KonvaImage
+                  image={image}
+                  width={600}
+                  height={300}
+                  listening={false}
+                />
+              )}
 
-          {polygons.map((polygon, index) => (
+              {polygons.map((polygon, index) => (
                 <Line
                   key={index}
                   points={polygon}
@@ -144,21 +159,21 @@ import {
                 />
               )}
 
-          {currentPoints.map((_, index) => {
-            if (index % 2 !== 0) return null;
+              {currentPoints.map((_, index) => {
+                if (index % 2 !== 0) return null;
 
-            return (
-              <Circle
-                key={index}
-                x={currentPoints[index]}
-                y={currentPoints[index + 1]}
-                radius={4}
-                fill="red"
-              />
-            );
-          })}
-        </Layer>
-      </Stage>
+                return (
+                  <Circle
+                    key={index}
+                    x={currentPoints[index]}
+                    y={currentPoints[index + 1]}
+                    radius={4}
+                    fill="red"
+                  />
+                );
+              })}
+            </Layer>
+          </Stage>
     </div>
   );
 })

@@ -100,7 +100,13 @@ const handleDeletePolygon = () => {
   setSelectedPolygon(null);
 };
 
+const handleZoomIn = () => {
+  canvasRef.current?.zoomIn();
+};
 
+const handleZoomOut = () => {
+  canvasRef.current?.zoomOut();
+};
 
   return (
     <DashboardLayout title="🖍 Image Annotation">
@@ -239,8 +245,18 @@ const handleDeletePolygon = () => {
             🗑 Delete Polygon
           </button>
 
-            <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">
-              💾 Save Annotation
+            <button
+              onClick={handleZoomIn}
+              className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+            >
+              🔍 Zoom In
+            </button>
+
+            <button
+              onClick={handleZoomOut}
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              🔎 Zoom Out
             </button>
 
           </div>
