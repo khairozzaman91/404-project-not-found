@@ -452,3 +452,17 @@ Zooming the annotation canvas caused the image to shift away from the center bec
 ## Solution:
 
 Moved scaling logic to the canvas layer and adjusted positioning to keep the image centered during zoom operations. Added zoom in and zoom out controls for easier annotation.
+
+### Update
+- Implemented annotation persistence workflow.
+- Saved annotations are automatically loaded when switching between images.
+- Synchronized canvas state with backend annotation data.
+- Improved image navigation and annotation rendering.
+
+### Challenge Faced
+
+When switching between images, previously saved annotations were not displayed even though they existed in the database. The canvas state and the parent component state became out of sync, causing polygons to disappear after changing the selected image.
+
+### Solution
+
+I refactored the annotation flow by lifting the polygon state to the parent component and passing it to the canvas through props. Whenever the selected image changes, the frontend fetches the saved annotations from the backend and updates the canvas state. This keeps the UI synchronized with the database and ensures that saved polygons are rendered correctly when revisiting an image.
