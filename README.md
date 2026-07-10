@@ -429,3 +429,17 @@ Double-click polygon completion was not user-friendly.
 
 Used forwardRef, useImperativeHandle, and useRef to enable parent-child communication.
 Moved polygon completion from double-click to a dedicated toolbar action.
+
+## Implemented
+- Added Undo Point action for the current polygon.
+- Connected the annotation toolbar with the canvas undo functionality.
+- Restricted undo to the active drawing without affecting completed polygons.
+
+  ##  Problem Faced
+  - The toolbar could not directly modify the drawing state inside PolygonCanvas.
+  - Undo needed to remove only the last point from the current polygon while preserving completed polygons.
+
+  ## Solution
+  - Reused the exposed undoPoint() method through forwardRef and useImperativeHandle.
+  - riggered the undo action from the parent component using canvasRef.
+  - Limited the undo operation to the active polygon, ensuring previously completed polygons remain unchanged
