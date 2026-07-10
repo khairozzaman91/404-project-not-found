@@ -412,3 +412,20 @@ Initially, users could start drawing immediately after opening the annotation pa
 ### Solution
 
 Introduced a dedicated Draw Polygon mode to control when drawing is allowed and added a dedicated annotation toolbar to organize annotation actions for a cleaner and more intuitive workflow.
+
+## Implemented
+
+- Added forwardRef and useImperativeHandle to expose canvas actions.
+- Connected the annotation toolbar with PolygonCanvas using useRef.
+- Replaced double-click polygon completion with a Finish Polygon button.
+- Improved the overall polygon drawing workflow.
+
+## Problem Faced
+
+Toolbar buttons could not control the child canvas component.
+Double-click polygon completion was not user-friendly.
+
+## Resolution
+
+Used forwardRef, useImperativeHandle, and useRef to enable parent-child communication.
+Moved polygon completion from double-click to a dedicated toolbar action.
