@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { getImages, uploadImage } from "../../services/annotation";
+import PolygonCanvas from "../../components/annotation/PolygonCanvas";
 
 function AnnotationPage() {
   const [images, setImages] = useState<any[]>([]);
@@ -125,35 +126,31 @@ const handleNext = () => {
         {/* Image Viewer + Polygon Panel */}
         <div className="flex h-65 gap-4">
 
-          <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
+            {/* Image Viewer */}
+            <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
-            {selectedImage ? (
-              <img
-                src={selectedImage.image}
-                alt="Selected"
-                className="h-full w-full rounded-lg object-contain"
-              />
-            ) : (
-              <div className="text-center font-semibold text-slate-500">
-                IMAGE VIEWER
-              </div>
-            )}
+              <PolygonCanvas imageUrl={selectedImage?.image} />
 
-          </div>
-
-          <div className="flex flex-[0.3] flex-col rounded-lg bg-white p-3 shadow">
-            <h3 className="mb-3 text-sm font-semibold">
-              Polygon List
-            </h3>
-
-            <div className="flex-1 space-y-2 overflow-y-auto">
-              <div className="rounded border p-2 text-sm">
-                ● Polygon #1
-              </div>
             </div>
-          </div>
 
-        </div>
+            {/* Polygon List */}
+            <div className="flex flex-[0.3] flex-col rounded-lg bg-white p-3 shadow">
+
+              <h3 className="mb-3 text-sm font-semibold">
+                Polygon List
+              </h3>
+
+              <div className="flex-1 space-y-2 overflow-y-auto">
+
+                <div className="rounded border p-2 text-sm">
+                  ● Polygon #1
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
 
         {/* Delete & Clear Buttons */}
         <div className="flex gap-2">
