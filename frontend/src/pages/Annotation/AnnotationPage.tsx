@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { getImages, uploadImage } from "../../services/annotation";
 import PolygonCanvas from "../../components/annotation/PolygonCanvas";
 import type { PolygonCanvasRef } from "../../components/annotation/PolygonCanvas";
-
+import {
+  getImages,
+  uploadImage,
+  saveAnnotation,
+} from "../../services/annotation";
 
 
 
@@ -108,6 +111,21 @@ const handleZoomOut = () => {
   canvasRef.current?.zoomOut();
 };
 
+
+const handleSaveAnnotation = async () => {
+  if (!selectedImage) return;
+
+  try {
+    for (const polygon of polygonList) {
+      await saveAnnotation(selectedImage.id, polygon);
+    }
+
+    alert("Annotations saved successfully!");
+  } catch (error) {
+    console.error(error);
+    alert("Failed to save annotations.");
+  }
+};
   return (
     <DashboardLayout title="🖍 Image Annotation">
       <div className="space-y-4">
@@ -161,9 +179,12 @@ const handleZoomOut = () => {
             />
           </>
 
-          <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">
-            💾 Save Annotation
-          </button>
+          <button
+          onClick={handleSaveAnnotation}
+          className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+        >
+          💾 Save Annotation
+        </button>
         </div>
 
         {/* Image Viewer + Polygon Panel */}

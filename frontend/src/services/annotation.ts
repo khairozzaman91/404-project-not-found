@@ -23,3 +23,36 @@ export const uploadImage = async (file: File) => {
 
   return response.data;
 };
+
+export const saveAnnotation = async (
+  imageId: number,
+  points: number[]
+) => {
+  const response = await axios.post(
+    `${API_URL}/annotations/`,
+    {
+      image: imageId,
+      points,
+    }
+  );
+
+  return response.data;
+};
+
+export const getAnnotations = async (
+  imageId: number
+) => {
+  const response = await axios.get(
+    `${API_URL}/annotations/?image=${imageId}`
+  );
+
+  return response.data;
+};
+
+export const deleteAnnotation = async (
+  annotationId: number
+) => {
+  await axios.delete(
+    `${API_URL}/annotations/${annotationId}/`
+  );
+};
