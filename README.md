@@ -508,27 +508,29 @@ Added image deletion functionality.
 **Solution:**
 Implemented a Django delete endpoint that removes the image from the database and media storage. Related annotations are automatically removed using Django's CASCADE relationship.
 
+
+
 ### Root Cause
 
 The backend validation used:
 
-```python
+python
 if not image_id or not points:
 
 
 ### Solution
 
-```md
+md
 ### Solution
 
 Updated the validation to:
 
-```python
+python
 if image_id is None or points is None:
 
 ### Result
 
-```md
+md
 ### Result
 
 - ✅ Annotation save works correctly.
@@ -537,3 +539,10 @@ if image_id is None or points is None:
 - ✅ Refresh no longer restores deleted annotations. 
 
 ## PolygonCanvas: Fixed image fitting issue to ensure images scale correctly within the container.
+## Annotation Improvements
+
+- Improved image fitting inside the annotation canvas while preserving the original aspect ratio.
+- Centered images dynamically within the canvas.
+- Restricted polygon drawing to the image area only.
+- Added validation to prevent saving invalid polygons (minimum 3 points required).
+- Improved responsive canvas sizing for different screen widths.
