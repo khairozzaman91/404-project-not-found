@@ -1,15 +1,16 @@
+import { Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import PolygonCanvas from "../../components/annotation/PolygonCanvas";
 import type { PolygonCanvasRef } from "../../components/annotation/PolygonCanvas";
+
 import {
   getImages,
   uploadImage,
   saveAnnotation,
   getAnnotations,
+  deleteImage,
 } from "../../services/annotation";
-
-
 
 function AnnotationPage() {
       const [images, setImages] = useState<any[]>([]);
@@ -117,6 +118,24 @@ function AnnotationPage() {
       setSelectedPolygon(null);
     };
 
+
+    const handleDeleteImage = async (imageId: number) => {
+          const confirmDelete = window.confirm(
+            "Delete this image?"
+          );
+
+          if (!confirmDelete) return;
+
+          try {
+            await deleteImage(imageId);
+
+            await loadImages();
+          } catch (error) {
+            console.error(error);
+            alert("Failed to delete image.");
+          }
+        };
+
     const handleZoomIn = () => {
       canvasRef.current?.zoomIn();
     };
@@ -220,7 +239,7 @@ function AnnotationPage() {
         <div className="flex h-65 gap-4">
 
             {/* Image Viewer */}
-            <div className="flex flex-[0.6] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
+            <div className="flex flex-[0.4] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
               <PolygonCanvas
                 ref={canvasRef}
@@ -319,26 +338,40 @@ function AnnotationPage() {
 
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
 
-            {images.map((image) => (
-              <div
-                key={image.id}
-                onClick={() => {
-                    setSelectedImage(image);
-                    setSelectedPolygon(null);
-                  }}
-                className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
-                  selectedImage?.id === image.id
-                    ? "border-blue-600"
-                    : "border-slate-300"
-                }`}
-              >
-                <img
-                  src={image.image}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            ))}
+           {images.map((image) => (
+  <div
+    key={image.id}
+    className="group relative"
+  >
+    <div
+      onClick={() => {
+        setSelectedImage(image);
+        setSelectedPolygon(null);
+      }}
+      className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
+        selectedImage?.id === image.id
+          ? "border-blue-600"
+          : "border-slate-300"
+      }`}
+    >
+      <img
+        src={image.image}
+        alt=""
+        className="h-full w-full object-cover"
+      />
+    </div>
+
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        handleDeleteImage(image.id);
+      }}
+      className="absolute -right-1 -top-1 hidden rounded-full bg-red-600 p-1 text-white shadow group-hover:block"
+    >
+      <Trash2 size={12} />
+    </button>
+  </div>
+))}
 
           </div>
         </div>

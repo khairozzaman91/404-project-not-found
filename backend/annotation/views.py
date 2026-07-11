@@ -1,6 +1,7 @@
+import os
 from rest_framework import generics, status
 from rest_framework.response import Response
-
+from django.conf import settings
 from .models import Image, Annotation
 from .serializers import ImageSerializer, AnnotationSerializer
 
@@ -9,6 +10,22 @@ class ImageListCreateView(generics.ListCreateAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
 
+
+
+class ImageDeleteView(generics.DestroyAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+    def perform_destroy(self, instance):
+        # Delete image file from media folder
+        if instance.image:
+            image_path = instance.image.path
+
+            if os.path.isfile(image_path):
+                os.remove(image_path)
+
+        # Delete image from database
+        instance.delete()
 
 class AnnotationListCreateView(generics.ListCreateAPIView):
     serializer_class = AnnotationSerializer

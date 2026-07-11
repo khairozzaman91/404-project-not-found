@@ -56,3 +56,11 @@ export const deleteAnnotation = async (
     `${API_URL}/annotations/${annotationId}/`
   );
 };
+
+export const deleteImage = async (
+  imageId: number
+) => {
+  await axios.delete(
+    `${API_URL}/images/${imageId}/`
+  );
+};
