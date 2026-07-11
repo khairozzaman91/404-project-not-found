@@ -22,7 +22,6 @@ function AnnotationPage() {
       const [selectedPolygon, setSelectedPolygon] = useState<number | null>(null);
 
         useEffect(() => {
-            console.log("polygonList:", polygonList);
           }, [polygonList]);
 
       const loadImages = async () => {
@@ -115,7 +114,6 @@ function AnnotationPage() {
       if (selectedPolygon === null) return;
 
       canvasRef.current?.deletePolygon(selectedPolygon);
-       console.log("After delete:", polygonList);
       setSelectedPolygon(null);
     };
 
@@ -141,7 +139,6 @@ function AnnotationPage() {
 
             await loadAnnotations(selectedImage.id);
           } catch (error) {
-            console.error(error);
             alert("Failed to save annotations.");
           }
         };
@@ -150,8 +147,7 @@ function AnnotationPage() {
     const loadAnnotations = async (imageId: number) => {
       try {
         const data = await getAnnotations(imageId);
-        console.log("DB Response:", data);
-
+        
         setPolygonList(
           data.map((item: any) => item.points)
         );
@@ -175,17 +171,17 @@ function AnnotationPage() {
             className="rounded border px-4 py-2 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
             ← Previous
-            </button>
+        </button>
 
-                <h2 className="font-semibold text-slate-700">
-                    Image {selectedImage ? images.findIndex(img => img.id === selectedImage.id) + 1 : 0} / {images.length}
-                </h2>
+        <h2 className="font-semibold text-slate-700">
+         Image {selectedImage ? images.findIndex(img => img.id === selectedImage.id) + 1 : 0} / {images.length}
+        </h2>
 
-                <button
-                    onClick={handleNext}
-                    disabled={
-                        !selectedImage ||
-                        images.findIndex((img) => img.id === selectedImage.id) === images.length - 1
+        <button
+           onClick={handleNext}
+           disabled={
+          !selectedImage ||
+          images.findIndex((img) => img.id === selectedImage.id) === images.length - 1
                     }
                     className="rounded border px-4 py-2 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                     >
@@ -224,7 +220,7 @@ function AnnotationPage() {
         <div className="flex h-65 gap-4">
 
             {/* Image Viewer */}
-            <div className="flex flex-[0.7] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
+            <div className="flex flex-[0.6] items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white">
 
               <PolygonCanvas
                 ref={canvasRef}
