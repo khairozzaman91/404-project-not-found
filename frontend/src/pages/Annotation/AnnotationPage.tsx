@@ -1,8 +1,15 @@
-import { Trash2 } from "lucide-react";
+
+import ThumbnailSlider from "../../components/annotation/ThumbnailSlider";
 import { useEffect, useRef, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import PolygonCanvas from "../../components/annotation/PolygonCanvas";
 import type { PolygonCanvasRef } from "../../components/annotation/PolygonCanvas";
+import type { ImageItem } from "../../types/annotation";
+import ImageNavigation from "../Annotation/ImageNavigation"
+import UploadSection from "../Annotation/UploadSection";
+import PolygonList from "../Annotation/PolygonList";
+import AnnotationToolbar from "../Annotation/AnnotationToolbar";
+
 
 import {
   getImages,
@@ -13,8 +20,10 @@ import {
 } from "../../services/annotation";
 
 function AnnotationPage() {
-      const [images, setImages] = useState<any[]>([]);
-      const [selectedImage, setSelectedImage] = useState<any>(null);
+  
+      const [images, setImages] = useState<ImageItem[]>([]);
+      const [selectedImage, setSelectedImage] =
+        useState<ImageItem | null>(null);
       const [isDrawing, setIsDrawing] = useState(false);
       
       const fileInputRef = useRef<HTMLInputElement>(null);
@@ -179,61 +188,24 @@ function AnnotationPage() {
       <div className="space-y-4">
 
         {/* Image Navigation */}
-        <div className="flex items-center justify-center gap-8 rounded-lg bg-white p-1 shadow">
-
-        <button
-            onClick={handlePrevious}
-            disabled={
-                !selectedImage ||
-                images.findIndex((img) => img.id === selectedImage.id) === 0
-            }
-            className="rounded border px-4 py-2 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-            ← Previous
-        </button>
-
-        <h2 className="font-semibold text-slate-700">
-         Image {selectedImage ? images.findIndex(img => img.id === selectedImage.id) + 1 : 0} / {images.length}
-        </h2>
-
-        <button
-           onClick={handleNext}
-           disabled={
-          !selectedImage ||
-          images.findIndex((img) => img.id === selectedImage.id) === images.length - 1
-                    }
-                    className="rounded border px-4 py-2 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                    Next →
-                    </button>
-        </div>
+          <ImageNavigation
+              currentIndex={
+                selectedImage
+                  ? images.findIndex((img) => img.id === selectedImage.id)
+                  : 0
+              }
+              totalImages={images.length}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+            />
 
         {/* Upload & Save */}
-        <div className="flex items-center justify-between rounded-lg bg-white p-1 shadow">
-          <>
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              📂 Upload Image
-            </button>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={handleUpload}
+            <UploadSection
+              fileInputRef={fileInputRef}
+              onUpload={() => fileInputRef.current?.click()}
+              onFileChange={handleUpload}
+              onSave={handleSaveAnnotation}
             />
-          </>
-
-          <button
-          onClick={handleSaveAnnotation}
-          className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-        >
-          💾 Save Annotation
-        </button>
-        </div>
 
         {/* Image Viewer + Polygon Panel */}
         <div className="flex h-65 gap-4">
@@ -252,129 +224,38 @@ function AnnotationPage() {
             </div>
 
             {/* Polygon List */}
-            <div className="flex flex-[0.3] flex-col rounded-lg bg-white p-3 shadow">
-
-              <h3 className="mb-3 text-sm font-semibold">
-                Polygon List
-              </h3>
-
-                <div className="flex-1 space-y-2 overflow-y-auto">
-                    {polygonList.map((_, index) => (
-                            <div
-                              key={index}
-                              onClick={() => setSelectedPolygon(index)}
-                              className={`rounded border p-2 text-sm cursor-pointer ${
-                                selectedPolygon === index
-                                  ? "border-red-700 bg-red-50"
-                                  : "hover:bg-slate-100"
-                              }`}
-                            >
-                        ● Polygon #{index + 1}
-                      </div>
-                    ))}
-                  </div>
-
-            </div>
+             <PolygonList
+              polygons={polygonList}
+              selectedPolygon={selectedPolygon}
+              onSelect={setSelectedPolygon}
+              />
 
           </div>
 
        
        {/* Annotation Toolbar */}
-          <div className="flex flex-wrap gap-2 rounded-lg bg-white p-3 shadow">
 
-            <button
-                onClick={handleDrawPolygon}
-                className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
-                  isDrawing
-                    ? "bg-indigo-800"
-                    : "bg-indigo-600 hover:bg-indigo-700"
-                }`}
-              >
-                {isDrawing ? "✅ Finish Polygon" : "🖊 Draw Polygon"}
-              </button>
+       <AnnotationToolbar
+          isDrawing={isDrawing}
+          selectedPolygon={selectedPolygon}
+          onDraw={handleDrawPolygon}
+          onUndo={handleUndoPoint}
+          onClear={handleClearPolygon}
+          onDelete={handleDeletePolygon}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+        />
 
-             <button
-                onClick={handleUndoPoint}
-                className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600"
-              >
-                ↩ Undo Point
-              </button>
-
-          <button
-            onClick={handleClearPolygon}
-            className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-          >
-            ❌ Clear
-          </button>
-
-          <button
-            onClick={handleDeletePolygon}
-            disabled={selectedPolygon === null}
-            className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            🗑 Delete Polygon
-          </button>
-
-            <button
-              onClick={handleZoomIn}
-              className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
-            >
-              🔍 Zoom In
-            </button>
-
-            <button
-              onClick={handleZoomOut}
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              🔎 Zoom Out
-            </button>
-
-          </div>
         {/* Images Slider */}
-        <div className="rounded-lg bg-white p-3 shadow">
-          <h3 className="mb-3 text-sm font-semibold">
-            Images
-          </h3>
-
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-
-           {images.map((image) => (
-  <div
-    key={image.id}
-    className="group relative"
-  >
-    <div
-      onClick={() => {
-        setSelectedImage(image);
-        setSelectedPolygon(null);
-      }}
-      className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
-        selectedImage?.id === image.id
-          ? "border-blue-600"
-          : "border-slate-300"
-      }`}
-    >
-      <img
-        src={image.image}
-        alt=""
-        className="h-full w-full object-cover"
-      />
-    </div>
-
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        handleDeleteImage(image.id);
-      }}
-      className="absolute -right-1 -top-1 hidden rounded-full bg-red-600 p-1 text-white shadow group-hover:block"
-    >
-      <Trash2 size={12} />
-    </button>
-  </div>
-))}
-
-          </div>
-        </div>
+        <ThumbnailSlider
+          images={images}
+          selectedImage={selectedImage}
+          onSelect={(image: ImageItem) => {
+            setSelectedImage(image);
+            setSelectedPolygon(null);
+          }}
+          onDelete={handleDeleteImage}
+        />
 
       </div>
     </DashboardLayout>
