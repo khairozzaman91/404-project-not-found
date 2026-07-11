@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function login(email: string, password: string) {
   const response = await axios.post(
-    "http://127.0.0.1:8000/api/login/",
+    "https://mdkhairozzaman.pythonanywhere.com/api/login/",
     {
       email,
       password,
