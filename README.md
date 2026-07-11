@@ -1,8 +1,14 @@
-# Development Log
+# 404 Project Not Found
+
+A full-stack task management and image annotation system built using **React**, **TypeScript**, **Django**, and **SQLite**.
 
 ---
 
-# Feature 1: 404 Project Not Found
+# Development Journey
+
+---
+
+# Authentication Module (Frontend)
 
 ## Technologies Used
 
@@ -11,6 +17,8 @@
 - Vite
 - Tailwind CSS
 
+---
+
 ## Components Created
 
 - AuthLayout
@@ -18,35 +26,55 @@
 - Input
 - Button
 - LoginPage
-- 
-## Database
+
+---
+
+## Demo Credentials
 
 | Email | Password |
 |--------|----------|
 | admin@404project.com | admin123 |
 
+---
 
-## Completed
+# Completed
 
-- Created a clean and responsive login page.
-- Added email and password input fields.
-- Added a "Remember Me" checkbox.
+- Created a clean and responsive Login page.
+- Added Email input field.
+- Added Password input field.
+- Added Remember Me checkbox.
 - Built reusable UI components.
-- Designed a simple authentication layout.
-
-## Challenges Faced
-
-- UI components were too close together.
-- Tailwind CSS was not working correctly during the initial setup.
-
-## Solution
-
-- Improved spacing using Tailwind CSS utilities.
-- Fixed the Tailwind CSS configuration.
+- Designed a reusable authentication layout.
 
 ---
 
-# Feature 2: Backend Login API
+# Challenges Faced
+
+## UI Components
+
+Initially, the spacing between UI components was inconsistent, causing the login form to look crowded.
+
+---
+
+## Tailwind CSS
+
+Tailwind CSS styles were not being applied correctly after the initial project setup.
+
+---
+
+# Solution
+
+### UI Components
+
+Improved spacing using Tailwind CSS utility classes and adjusted margins and padding to create a cleaner layout.
+
+### Tailwind CSS
+
+Verified and fixed the Tailwind CSS configuration, ensuring all utility classes were loaded correctly.
+
+---
+
+# Backend Authentication API
 
 ## Technologies Used
 
@@ -56,124 +84,315 @@
 - SQLite
 - Postman
 
+---
 
-
-## Completed
+# Completed
 
 - Created the Admin model.
 - Configured SQLite database.
-- Inserted a demo admin account.
+- Inserted a demo administrator account.
 - Built the Login API.
-- Tested the API using Postman.
+- Connected Django ORM with SQLite.
+- Successfully authenticated administrator credentials.
 
-## Challenges Faced
+---
 
-- URL configuration issues.
-- CSRF protection blocked POST requests.
-- SQLite setup and manual data insertion.
+# API
 
-## Solution
+## Login
 
-- Fixed URL routing.
-- Used `@csrf_exempt` during development.
-- Inserted the admin record into SQLite.
-- Verified the API using Postman.
+```
+POST /api/login/
+```
 
+---
 
-### Completed
+# Database
 
-- Connected the React login form with the Django Login API using Axios.
-- Implemented admin authentication using SQLite.
+| Email | Password |
+|--------|----------|
+| admin@404project.com | admin123 |
+
+---
+
+# Challenges Faced
+
+## URL Configuration
+
+The Login API endpoint was not accessible because of incorrect URL routing.
+
+---
+
+## CSRF Protection
+
+POST requests were blocked by Django's CSRF protection during development.
+
+---
+
+## SQLite Setup
+
+Creating the SQLite database and inserting the administrator account required manual configuration.
+
+---
+
+# Solution
+
+### URL Configuration
+
+Updated Django URL routing and correctly registered the authentication endpoints.
+
+### CSRF
+
+Used `@csrf_exempt` during development to simplify API testing.
+
+### SQLite
+
+Inserted the administrator account manually into the SQLite database and verified the data.
+
+---
+
+# API Testing
+
+The Login API was tested using **Postman**.
+
+Verified:
+
+- Request payload
+- Response status
+- Authentication success
+- Invalid credential handling
+
+---
+
+# Frontend & Backend Integration
+
+# Completed
+
+- Connected the React Login page with the Django Login API using Axios.
+- Implemented administrator authentication.
 - Redirected authenticated users to the Task Board.
-- Tested the login API using Postman.
+- Successfully connected the frontend with the backend.
+- Verified API responses using Postman.
 
-### Challenges & Solutions
+---
 
-#### CORS Issue
+# Challenges Faced
 
-**Problem**
-React could not access the Django API due to CORS restrictions.
+## CORS Issue
 
-**Solution**
-Installed and configured `django-cors-headers`, added the middleware, and allowed the frontend origin.
+The React frontend could not communicate with the Django backend because the browser blocked cross-origin requests.
 
-#### Frontend & Backend Connection
+---
 
-**Problem**
-The frontend could not communicate with the backend during login.
+## Frontend & Backend Connection
 
-**Solution**
-Verified the API endpoint, tested it with Postman, configured Axios correctly, and confirmed successful authentication.
+The frontend failed to authenticate because the API endpoint configuration was incorrect.
 
+---
 
-### Completed
+# Solution
 
-- Created the initial Task Board UI.
-- Built reusable components:
-  - Board
-  - Column
-  - TaskCard
-  - DateSelector
-- Organized the task page into a modular component structure.
+### CORS
 
-### Completed
+Installed and configured:
 
-- Created the `Task` model using Django ORM.
-- Added the Create Task API (`POST /api/tasks/`).
-- Added the Get Tasks API (`GET /api/tasks/list/`).
-- Successfully stored task data in the SQLite database.
-- Tested both APIs using Postman.
+```
+django-cors-headers
+```
 
-### Challenges
+Added the middleware and allowed the frontend origin.
 
-**Problem:**
-- I needed to verify whether the Task APIs were correctly storing and retrieving data from the SQLite database.
+---
 
-**Solution:**
-- I tested the `POST /api/tasks/` and `GET /api/tasks/list/` endpoints using Postman.
-- I verified the API responses and checked the SQLite database to confirm that the task data was successfully stored and retrieved.
+### API Connection
 
-  ## Features
+- Verified API endpoints.
+- Tested endpoints using Postman.
+- Configured Axios correctly.
+- Successfully established communication between the frontend and backend.
 
-### Task Management (Kanban Board)
+---
 
-- User authentication with Django backend
-- Create, view, update, and delete tasks
-- Kanban board with three columns:
-  - To Do
-  - In Progress
-  - Done
-- Date-based task filtering
-- Drag and drop tasks between columns using dnd-kit
-- Task cards with priority and tags support
-- Backend persistence using Django ORM and SQLite
+# API Testing
 
+The complete authentication flow was tested using **Postman** before integrating it with the frontend.
 
-## Challenges & Solutions
+Verified:
 
-### 1. Implementing Drag and Drop
+- POST request
+- Response body
+- Authentication
+- Error handling
 
-**Challenge:**
-Managing task movement between different Kanban columns while keeping the UI state synchronized with the backend.
+---
 
-**Solution:**
-Implemented drag and drop functionality using `@dnd-kit/core`. Used draggable task cards and droppable columns. On drag completion, the task status is updated and synchronized with the backend API.
+# Task Board UI
 
+# Completed
 
-### 2. Drag and Drop Conflict with Edit/Delete Actions
+Created the initial Kanban Board interface.
 
-**Challenge:**
+Built reusable components:
 
-While implementing Kanban drag and drop using `@dnd-kit/core`, the entire task card became draggable. Because of this, clicking the Edit or Delete buttons was sometimes detected as a drag action instead of a button click.
+- Board
+- Column
+- TaskCard
+- DateSelector
 
-**Solution:**
+Organized the page using reusable React components to improve scalability and maintainability.
 
-Stopped the drag event propagation from the action button area using pointer event handling. This allowed the task card to remain draggable while keeping Edit and Delete buttons fully functional.
+---
+
+# Challenges Faced
+
+Initially, the Task Board UI was placed inside a single component, making the code difficult to maintain as the project grew.
+
+---
+
+# Solution
+
+Separated the UI into reusable components so that each component had a single responsibility.
+
+---
+
+# Task Backend
+
+# Technologies Used
+
+- Django
+- Django ORM
+- SQLite
+- Postman
+
+---
+
+# Completed
+
+- Created the Task model.
+- Built Create Task API.
+- Built Get Tasks API.
+- Stored task data inside SQLite.
+- Connected Django ORM with SQLite.
+
+---
+
+# APIs
+
+## Create Task
+
+```
+POST /api/tasks/
+```
+
+## Get Tasks
+
+```
+GET /api/tasks/list/
+```
+
+---
+
+# Challenges Faced
+
+Initially, it was difficult to verify whether the APIs were correctly storing and retrieving task data from SQLite.
+
+---
+
+# Solution
+
+Used **Postman** to test both endpoints.
+
+Verified:
+
+- POST request
+- GET request
+- Response body
+- Stored database records
+
+Also checked the SQLite database manually to confirm that the task data was successfully stored and retrieved.
+
+---
+
+# Features
+
+## Task Management
+
+- User authentication using Django backend.
+- Create Task.
+- View Task.
+- Update Task.
+- Delete Task.
+- Kanban Board.
+- Date filtering.
+- Backend persistence.
+- SQLite integration.
+
+---
+
+## Kanban Columns
+
+- To Do
+- In Progress
+- Done
+
+---
+
+# Drag and Drop
+
+# Completed
+
+Implemented drag-and-drop functionality using **@dnd-kit/core**.
+
+Users can now move tasks between:
+
+- To Do
+- In Progress
+- Done
+
+---
+
+# Challenges Faced
+
+Managing task movement while keeping both the frontend and backend synchronized.
+
+---
+
+# Solution
+
+Updated the task status immediately after drag completion and synchronized the updated task with the backend.
+
+---
+
+# Challenges Faced
+
+## Drag & Drop Conflict
+
+While implementing drag-and-drop using **@dnd-kit/core**, the entire task card became draggable.
+
+Because of this:
+
+- Clicking Edit sometimes started dragging.
+- Clicking Delete sometimes started dragging.
+
+The action buttons could not be clicked reliably.
+
+---
+
+# Solution
+
+Stopped drag event propagation from the action button area.
 
 Implemented:
-- Drag and drop for task cards between columns.
-- Separate handling for card dragging and button actions.
-- Fixed event conflicts between draggable elements and clickable buttons.
+
+- Independent drag handling.
+- Independent Edit button handling.
+- Independent Delete button handling.
+- Proper separation between dragging and clicking.
+
+This allowed the task card to remain draggable while keeping the Edit and Delete buttons fully functional.
+
+---
+# Task Editing & State Management
 
 ## Completed
 
@@ -183,366 +402,956 @@ Implemented:
 - Added an empty state message ("No tasks available").
 - Improved task card UI and spacing.
 
-## Challenges & Solutions
+---
 
-### 1. Task Edit Issue
+## Challenges Faced
 
-**Problem**
+### Task Edit Issue
 
-After editing a task, the updated data was saved in the database, but the frontend continued showing the old data until the page was refreshed.
+After editing a task, the updated data was successfully saved in the database, but the frontend continued showing the old data until the page was refreshed.
 
-**Solution**
+### Solution
 
-Called `loadTasks()` after every successful update so the latest data is fetched from the backend immediately.
+Called `loadTasks()` immediately after every successful update so the latest task data is fetched from the backend and rendered without requiring a page refresh.
 
 ---
 
-### 2. Date State Synchronization
+## Challenges Faced
 
-**Problem**
+### Date State Synchronization
 
-The selected date was managed using local component state (`useState`), making it difficult to share between multiple components.
+Initially, the selected date was managed using local component state (`useState`). Because of this, sharing the selected date between multiple components became difficult.
 
-**Solution**
+### Solution
 
-Implemented React Context API using `useContext` and created a shared `DateContext` so both `TasksPage` and `DateSelector` use the same date state.
+Implemented React Context API using `useContext`.
+
+Created a shared `DateContext` so both `TasksPage` and `DateSelector` access the same selected date without prop drilling.
 
 ---
 
-### 3. Empty State
+## Challenges Faced
 
-**Problem**
+### Empty State
 
-When no tasks existed for a selected date, the task columns appeared empty.
+When there were no tasks for a selected date, the Kanban columns appeared completely empty, making it difficult for users to understand whether tasks failed to load or simply did not exist.
 
-**Solution**
+### Solution
 
-Added a professional message:
+Added a professional empty state message:
 
 > **No tasks available**
 
-to clearly indicate there are no tasks for the selected date.
+This clearly indicates that no tasks exist for the selected date.
 
 ---
 
-### 4. Task Organization
+## Challenges Faced
 
-**Problem**
+### Task Organization
 
-Tasks did not have any visible ordering.
-
-**Solution**
-
-Added serial numbers (`#1`, `#2`, `#3`, ...) to improve readability and organization.
-
-
-
-## Dashboard Layout & Navigation
-
-### Completed
-
-- Created a reusable `DashboardLayout` component.
-- Added a reusable `Sidebar` for navigation.
-- Added a reusable `Navbar` with dynamic page titles.
-- Created the `AnnotationPage`.
-- Added routing between **Task Board** and **Image Annotation** pages.
-- Refactored the project structure for better scalability and maintainability.
-- Integrated the shared dashboard layout across multiple pages.
-
-### Challenge
-
-**Problem:**
-
-As the project expanded with multiple pages, maintaining separate layouts for each page resulted in duplicated code and inconsistent UI.
+Tasks had no visible ordering, making multiple tasks difficult to identify quickly.
 
 ### Solution
 
-Implemented a reusable `DashboardLayout` that includes a shared `Sidebar` and `Navbar`. Both the **Task Board** and **Annotation** pages now use the same layout while displaying dynamic page titles. This reduced code duplication, improved maintainability, and ensured a consistent user experience.
+Added serial numbering:
 
+```
+#1
+#2
+#3
+...
+```
+
+This improves readability and task organization.
+
+---
+
+# Dashboard Layout & Navigation
+
+## Completed
+
+- Created a reusable DashboardLayout component.
+- Created a reusable Sidebar.
+- Created a reusable Navbar.
+- Added dynamic page titles.
+- Created the Annotation page.
+- Added routing between Task Board and Annotation pages.
+- Refactored the overall page structure for better scalability.
+- Reused the same layout across multiple pages.
+
+---
+
+## Challenges Faced
+
+As the application expanded beyond the Task Board, maintaining separate layouts for each page resulted in duplicated code and inconsistent UI.
+
+---
+
+## Solution
+
+Created a reusable `DashboardLayout` component containing:
+
+- Sidebar
+- Navbar
+- Dynamic Page Title
+
+Both the Task Board and Annotation pages now share the same layout while displaying different page titles.
+
+Benefits:
+
+- Reduced duplicate code.
+- Improved maintainability.
+- Consistent user experience.
+- Easier future expansion.
+
+---
 
 # Annotation Dashboard
 
-## Features Implemented
+## Completed
 
-- Implemented the Annotation page using a reusable Dashboard Layout.
-- Added Previous and Next navigation controls for switching images.
-- Added Upload Image and Save Annotation action buttons.
-- Created a dedicated Image Viewer section for image annotation.
-- Designed a Polygon List panel to display saved polygons.
-- Added Delete and Clear buttons for polygon management.
-- Implemented a horizontal scrollable thumbnail slider for navigating multiple uploaded images.
-- Structured the layout to support future backend integration for image upload, image navigation, polygon drawing, and annotation persistence.
+Implemented the Annotation page using the shared Dashboard Layout.
+
+Added:
+
+- Previous Image button.
+- Next Image button.
+- Upload Image button.
+- Save Annotation button.
+- Image Viewer section.
+- Polygon List panel.
+- Delete Polygon button.
+- Clear Polygon button.
+- Horizontal Thumbnail Slider.
+
+The layout was designed to support future backend integration for:
+
+- Image Upload
+- Image Navigation
+- Polygon Drawing
+- Annotation Persistence
 
 ---
 
 ## Challenges Faced
 
-### 1. Annotation Page Layout
+### Annotation Page Layout
 
-Initially, arranging the Image Viewer, Polygon List, and action buttons while maintaining a clean and responsive layout was challenging. Different layout approaches resulted in inconsistent spacing and alignment.
+Initially, arranging the Image Viewer, Polygon List, Navigation, and Toolbar while keeping the layout clean and responsive was difficult.
+
+Several layout approaches resulted in inconsistent spacing and alignment.
 
 ### Solution
 
-Refactored the page using a Flexbox-based layout, allowing the Image Viewer and Polygon List to remain aligned while keeping the interface responsive and easier to maintain.
+Refactored the page using Flexbox.
+
+Separated the page into independent sections:
+
+- Image Navigation
+- Upload Section
+- Image Viewer
+- Polygon List
+- Annotation Toolbar
+- Thumbnail Slider
+
+This made the UI easier to maintain and improved responsiveness.
 
 ---
 
-### 2. Positioning Annotation Controls
+## Challenges Faced
 
-Finding the best position for the Delete and Clear buttons was difficult. Placing them inside the Polygon List or Image Viewer made the interface look cluttered and interrupted the annotation workflow.
+### Annotation Toolbar Position
+
+Finding the most intuitive location for the Delete and Clear actions was difficult.
+
+Placing them inside the Image Viewer or Polygon List made the interface cluttered.
 
 ### Solution
 
-Moved the annotation action buttons below the Image Viewer and above the thumbnail slider, creating a clear separation between annotation actions and image navigation.
+Moved all annotation actions into a dedicated Annotation Toolbar located below the Image Viewer.
+
+This clearly separates annotation tools from image navigation.
 
 ---
 
-### 3. Thumbnail Navigation
+## Challenges Faced
 
-Designing a thumbnail section that could later support multiple uploaded images without affecting the overall layout required careful planning.
+### Thumbnail Navigation
+
+The thumbnail gallery needed to support multiple uploaded images without affecting the overall layout.
 
 ### Solution
 
-Implemented a dedicated horizontal scrollable thumbnail slider. The current UI uses placeholder thumbnails, making it easy to replace them with dynamically loaded images from the backend later.
+Designed a horizontally scrollable thumbnail slider.
+
+Initially the slider displayed placeholder images, making it easy to replace them later with backend data.
 
 ---
 
-### 4. Future Backend Integration
+## Challenges Faced
 
-The Annotation page needed to support future backend functionality such as image uploads, image navigation, polygon storage, and annotation persistence.
+### Future Backend Integration
+
+The UI needed to support future features such as:
+
+- Image Upload
+- Image Navigation
+- Polygon Storage
+- Annotation Persistence
 
 ### Solution
 
-Designed the UI in a modular way so each section (Image Viewer, Polygon List, Navigation, and Thumbnail Slider) can be connected to backend APIs independently without major UI changes.
+Designed every section independently so each feature could later connect to backend APIs without requiring major UI changes.
 
+---
 
-## Annotation Backend
+# Annotation Backend
 
-### Completed
+## Technologies Used
 
-- Created `annotation` Django app.
-- Added `Image` model using `ImageField`.
-- Configured media file handling (`MEDIA_URL` and `MEDIA_ROOT`).
-- Implemented image upload API (`POST /api/annotation/images/`).
-- Implemented image list API (`GET /api/annotation/images/`).
-- Registered image model in Django Admin.
-- Tested image upload and retrieval successfully using Postman.
+- Python
+- Django
+- Django ORM
+- SQLite
+- Pillow
+- Postman
 
-  ### Problems Faced
+---
 
-1. Django raised an error when using `ImageField` because Pillow was not installed.
+## Completed
 
-2. Uploaded images were not accessible until media file serving was configured in Django.
+- Created the `annotation` Django application.
+- Created the `Image` model using `ImageField`.
+- Configured `MEDIA_URL`.
+- Configured `MEDIA_ROOT`.
+- Implemented Image Upload API.
+- Implemented Image List API.
+- Registered the Image model inside Django Admin.
+- Successfully uploaded images.
+- Successfully retrieved uploaded images.
 
-3. Initially, the annotation APIs were not reachable because the `annotation` app routes had not been included in the project URLs.
+---
 
-### Solutions
+## APIs
 
-1. Installed the Pillow package to enable Django's `ImageField` support.
+### Upload Image
 
-2. Configured `MEDIA_URL` and `MEDIA_ROOT` in `settings.py` and served media files during development using `static()` in `config/urls.py`.
+```
+POST /api/annotation/images/
+```
 
-3. Created dedicated annotation routes and registered them in the project's URL configuration.
+### Get Images
 
-4. Verified both upload (`POST`) and retrieval (`GET`) endpoints using Postman before integrating the frontend.
+```
+GET /api/annotation/images/
+```
 
-## Dynamic Image Loading & Viewer
+---
 
-### Implemented
+## API Testing
+
+All APIs were tested using **Postman**.
+
+Verified:
+
+- Image upload.
+- Multipart form request.
+- Response status.
+- Database records.
+- Uploaded media files.
+
+---
+
+## Challenges Faced
+
+### ImageField Error
+
+Django raised an error because Pillow was not installed.
+
+### Solution
+
+Installed Pillow and verified that `ImageField` works correctly.
+
+---
+
+## Challenges Faced
+
+### Media Files
+
+Uploaded images could not be accessed after uploading.
+
+### Solution
+
+Configured:
+
+- MEDIA_URL
+- MEDIA_ROOT
+
+Served media files during development using:
+
+```python
+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+---
+
+## Challenges Faced
+
+### URL Configuration
+
+Initially the Annotation APIs were unreachable because the annotation routes had not been registered.
+
+### Solution
+
+Created dedicated annotation URLs and included them inside the project routing configuration.
+
+---
+
+## API Verification
+
+Verified using Postman:
+
+- POST request
+- GET request
+- Response body
+- Uploaded image
+- SQLite database records
+
+Successfully confirmed that the backend worked correctly before integrating it with the frontend.
+
+---
+# Dynamic Image Loading & Image Viewer
+
+## Completed
+
 - Connected the Annotation page with the Django backend.
 - Fetched uploaded images using the Image API.
-- Implemented image upload functionality from the frontend.
+- Implemented frontend image upload functionality.
 - Displayed uploaded images as dynamic thumbnails.
-- Added image preview in the Image Viewer.
-- Automatically selected the first uploaded image.
+- Displayed the selected image inside the Image Viewer.
+- Automatically selected the first uploaded image after loading.
 - Updated the image navigation counter dynamically.
 
-### Problem Faced
-Initially, thumbnails were rendered using static placeholder data, so newly uploaded images were not visible in the interface. The Image Viewer also displayed only placeholder content instead of the selected image.
-
-### Solution
-Integrated the frontend with the backend image APIs. Replaced the static thumbnail list with dynamically fetched data, introduced state management for the selected image, and refreshed the image list immediately after each upload. This ensured that uploaded images appeared instantly and could be previewed by selecting their thumbnails.
-
-## Image Previous & Next Navigation
-### Implemented
-- Added Previous and Next navigation for uploaded images.
-- Enabled seamless navigation between images without reloading the page.
-- Updated the current image viewer dynamically when navigating.
-- Synchronized the image counter with the selected image (Image X / Total).
-- Disabled Previous button on the first image and Next button on the last image to prevent invalid navigation.
-- Kept the thumbnail gallery synchronized with the currently selected image.
-
-### Challenges
-Initially, image navigation was only possible by clicking thumbnails. There was no convenient way to move sequentially through uploaded images, and keeping the selected image, image counter, and thumbnail gallery synchronized required proper state management.
-
-### Solution
-Implemented Previous and Next navigation by tracking the currently selected image. The image viewer, counter, and thumbnail gallery now update together, while boundary checks prevent navigation beyond the first or last uploaded image.
-
-
- ## Annotation Module
-
-### Implemented
-
-- Integrated React Konva into the annotation page.
-- Rendered uploaded images inside the annotation canvas.
-- Added interactive point placement on the canvas as the foundation for polygon drawing.
-
 ---
-
-### Challenges
-
-Initially, the annotation page displayed images using a standard `<img>` element, which made it impossible to draw annotations directly on top of the image. Replacing the image viewer with a canvas while preserving the existing layout, thumbnail navigation, and image switching required restructuring the component. Additionally, handling mouse interactions inside the canvas introduced new state management challenges.
-
----
-
-### Solution
-
-Replaced the traditional image viewer with a React Konva canvas, allowing uploaded images to be rendered inside the canvas. Implemented point placement by capturing mouse click coordinates, establishing the foundation for polygon drawing while keeping the existing thumbnail gallery, image navigation, and layout unchanged.
-
-
-### Implemented
-
-- Added Draw Polygon mode to enable and disable annotation drawing.
-- Added a dedicated annotation toolbar for annotation actions.
-
-### Challenges
-
-Initially, users could start drawing immediately after opening the annotation page, which caused accidental annotations while navigating images.
-
-### Solution
-
-Introduced a dedicated Draw Polygon mode to control when drawing is allowed and added a dedicated annotation toolbar to organize annotation actions for a cleaner and more intuitive workflow.
-
-## Implemented
-
-- Added forwardRef and useImperativeHandle to expose canvas actions.
-- Connected the annotation toolbar with PolygonCanvas using useRef.
-- Replaced double-click polygon completion with a Finish Polygon button.
-- Improved the overall polygon drawing workflow.
-
-## Problem Faced
-
-Toolbar buttons could not control the child canvas component.
-Double-click polygon completion was not user-friendly.
-
-## Resolution
-
-Used forwardRef, useImperativeHandle, and useRef to enable parent-child communication.
-Moved polygon completion from double-click to a dedicated toolbar action.
-
-## Implemented
-- Added Undo Point action for the current polygon.
-- Connected the annotation toolbar with the canvas undo functionality.
-- Restricted undo to the active drawing without affecting completed polygons.
-
-  ##  Problem Faced
-  - The toolbar could not directly modify the drawing state inside PolygonCanvas.
-  - Undo needed to remove only the last point from the current polygon while preserving completed polygons.
-
-  ## Solution
-  - Reused the exposed undoPoint() method through forwardRef and useImperativeHandle.
-  - riggered the undo action from the parent component using canvasRef.
-  - Limited the undo operation to the active polygon, ensuring previously completed polygons remain unchanged
-
-
-## Problem:
-
-Zooming the annotation canvas caused the image to shift away from the center because scaling was applied directly to the stage.
-
-## Solution:
-
-Moved scaling logic to the canvas layer and adjusted positioning to keep the image centered during zoom operations. Added zoom in and zoom out controls for easier annotation.
-
-### Update
-- Implemented annotation persistence workflow.
-- Saved annotations are automatically loaded when switching between images.
-- Synchronized canvas state with backend annotation data.
-- Improved image navigation and annotation rendering.
-
-### Challenge Faced
-
-When switching between images, previously saved annotations were not displayed even though they existed in the database. The canvas state and the parent component state became out of sync, causing polygons to disappear after changing the selected image.
-
-### Solution
-
-I refactored the annotation flow by lifting the polygon state to the parent component and passing it to the canvas through props. Whenever the selected image changes, the frontend fetches the saved annotations from the backend and updates the canvas state. This keeps the UI synchronized with the database and ensures that saved polygons are rendered correctly when revisiting an image.
-
-### Issue: Deleted annotations reappeared after page refresh
-
-After deleting all polygons and saving, the frontend showed no annotations. However, after refreshing the page, the deleted annotations were loaded again from the database.
-
 
 ## Challenges Faced
 
-### 1. Duplicate Annotation Records
+### Static Thumbnail Data
 
-Initially, every save operation created duplicate annotation records instead of replacing the previous ones.
-
-**Solution:**
-Implemented logic in the backend to remove existing annotations for the selected image before saving the updated polygons.
+Initially, the thumbnail gallery displayed only static placeholder images. Newly uploaded images did not appear in the interface, and the Image Viewer continued displaying placeholder content.
 
 ---
 
-### 2. Empty Annotation Handling
+## Solution
 
-Deleting all polygons resulted in a validation error because an empty array was rejected.
+Integrated the frontend with the backend Image APIs.
 
-**Solution:**
-Updated backend validation to accept an empty polygon list while still validating required request fields.
+Implemented:
+
+- Dynamic image loading.
+- Image state management.
+- Automatic refresh after every successful upload.
+- Automatic selection of the first available image.
+
+Uploaded images now appear immediately without requiring a page refresh.
 
 ---
 
-### 3. Polygon Synchronization
+# Image Previous & Next Navigation
+
+## Completed
+
+- Added Previous Image navigation.
+- Added Next Image navigation.
+- Implemented seamless image switching without reloading the page.
+- Updated the Image Viewer dynamically.
+- Updated the image counter automatically.
+- Disabled the Previous button on the first image.
+- Disabled the Next button on the last image.
+- Kept the thumbnail gallery synchronized with the selected image.
+
+---
+
+## Challenges Faced
+
+Initially, image navigation was only possible by clicking thumbnail images.
+
+There was no simple way to browse uploaded images sequentially.
+
+Synchronizing:
+
+- Selected Image
+- Image Counter
+- Thumbnail Selection
+
+required additional state management.
+
+---
+
+## Solution
+
+Tracked the currently selected image using React state.
+
+Whenever the selected image changes:
+
+- Image Viewer updates.
+- Thumbnail selection updates.
+- Previous / Next navigation updates.
+- Image counter updates.
+
+Boundary validation prevents navigation beyond the first and last uploaded image.
+
+---
+
+# Annotation Module
+
+## Technologies Used
+
+- React Konva
+- React
+- TypeScript
+
+---
+
+## Completed
+
+- Integrated React Konva into the Annotation page.
+- Rendered uploaded images inside the annotation canvas.
+- Added interactive point placement.
+- Prepared the foundation for polygon drawing.
+
+---
+
+## Challenges Faced
+
+Initially, images were displayed using a standard HTML `<img>` element.
+
+Because of this:
+
+- Drawing on top of images was impossible.
+- Polygon rendering was not supported.
+- Mouse interaction could not be captured correctly.
+
+Replacing the Image Viewer while preserving the existing layout also required restructuring the component.
+
+---
+
+## Solution
+
+Replaced the traditional image viewer with React Konva.
+
+Uploaded images are now rendered directly inside the canvas.
+
+Captured mouse coordinates on click events to support future polygon drawing while preserving:
+
+- Image navigation
+- Thumbnail gallery
+- Existing layout
+
+---
+
+# Polygon Drawing
+
+## Completed
+
+- Added Draw Polygon mode.
+- Enabled and disabled drawing using a toolbar button.
+- Added a dedicated Annotation Toolbar.
+
+---
+
+## Challenges Faced
+
+Initially, users could start drawing immediately after opening the Annotation page.
+
+This caused accidental annotations while navigating between images.
+
+---
+
+## Solution
+
+Introduced a dedicated Draw Polygon mode.
+
+Drawing is now enabled only after clicking the Draw Polygon button.
+
+This prevents accidental point placement.
+
+---
+
+# Annotation Toolbar
+
+## Completed
+
+Created a dedicated Annotation Toolbar containing:
+
+- Draw Polygon
+- Finish Polygon
+- Undo Point
+- Clear Polygon
+- Delete Polygon
+- Zoom In
+- Zoom Out
+
+---
+
+## Challenges Faced
+
+Initially, annotation actions were scattered throughout the interface, making the workflow confusing.
+
+---
+
+## Solution
+
+Moved all annotation actions into a single toolbar located below the Image Viewer.
+
+This provides a cleaner and more organized annotation workflow.
+
+---
+
+# Parent–Child Component Communication
+
+## Completed
+
+- Added `forwardRef`.
+- Added `useImperativeHandle`.
+- Connected the toolbar with the PolygonCanvas.
+- Replaced double-click polygon completion with the Finish Polygon button.
+
+---
+
+## Challenges Faced
+
+Toolbar buttons could not directly control the PolygonCanvas component because the drawing state existed inside the child component.
+
+Additionally, double-clicking to finish polygons was not intuitive.
+
+---
+
+## Solution
+
+Implemented:
+
+- `forwardRef`
+- `useImperativeHandle`
+- `useRef`
+
+Exposed canvas methods to the parent component.
+
+The toolbar can now directly control:
+
+- Finish Polygon
+- Undo Point
+- Clear Polygon
+- Delete Polygon
+- Zoom In
+- Zoom Out
+
+without tightly coupling the components.
+
+---
+
+# Undo Point
+
+## Completed
+
+- Added Undo Point functionality.
+- Connected the toolbar with the PolygonCanvas.
+- Limited undo functionality to the currently active polygon.
+
+---
+
+## Challenges Faced
+
+Undo needed to remove only the last point of the polygon currently being drawn while keeping previously completed polygons unchanged.
+
+---
+
+## Solution
+
+Reused the exposed `undoPoint()` method through `forwardRef`.
+
+Triggered the undo action from the parent component using `canvasRef`.
+
+Previously completed polygons remain untouched while only the active polygon is modified.
+
+---
+# Annotation Persistence
+
+## Completed
+
+- Implemented annotation persistence workflow.
+- Saved annotations are automatically loaded when switching between images.
+- Synchronized the PolygonCanvas state with backend annotation data.
+- Improved image navigation and annotation rendering.
+- Connected frontend annotation state with the backend database.
+
+---
+
+## Challenges Faced
+
+### Annotation Synchronization
+
+Initially, previously saved annotations were not displayed after switching between images, even though the annotation data already existed in the database.
+
+The PolygonCanvas state and the parent component state became out of sync, causing polygons to disappear whenever another image was selected.
+
+---
+
+## Solution
+
+Refactored the annotation workflow by lifting the polygon state to the parent component.
+
+Passed polygon data to `PolygonCanvas` through props.
+
+Whenever the selected image changes:
+
+- Fetch annotations from the backend.
+- Update the parent state.
+- Synchronize the PolygonCanvas.
+- Render previously saved polygons automatically.
+
+This keeps the frontend synchronized with the database.
+
+---
+
+# Delete Annotation Issue
+
+## Problem
+
+After deleting every polygon and saving the image, the frontend correctly displayed an empty canvas.
+
+However, after refreshing the page, the deleted annotations appeared again because they still existed in the database.
+
+---
+
+## Root Cause
+
+Every save request created new annotation records instead of replacing the previous records.
+
+The backend validation also rejected empty polygon arrays.
+
+---
+
+## Challenges Faced
+
+### Duplicate Annotation Records
+
+Every save operation inserted new annotation records into the database.
+
+Old annotation records were never removed.
+
+This produced duplicate polygon data.
+
+---
+
+## Solution
+
+Before saving annotations, deleted every existing annotation belonging to the selected image.
+
+```python
+Annotation.objects.filter(image_id=image_id).delete()
+```
+
+The backend now replaces old annotations with the latest annotation set instead of creating duplicates.
+
+---
+
+## Challenges Faced
+
+### Empty Annotation Handling
+
+Deleting all polygons resulted in an empty array.
+
+The backend rejected the request because the validation treated an empty array as invalid.
+
+---
+
+## Root Cause
+
+The backend validation was:
+
+```python
+if not image_id or not points:
+```
+
+An empty list evaluates to `False`, so valid delete operations failed.
+
+---
+
+## Solution
+
+Updated the validation logic to:
+
+```python
+if image_id is None or points is None:
+```
+
+Now the backend correctly accepts an empty polygon list while still validating required request fields.
+
+---
+
+## Challenges Faced
+
+### Polygon Synchronization
 
 Deleting polygons from the frontend did not immediately synchronize with the backend.
 
-**Solution:**
-Improved state synchronization between the React canvas component and backend API by updating the polygon state before saving.
+---
+
+## Solution
+
+Improved synchronization between the React state and backend APIs.
+
+Updated the polygon state before saving annotations so both frontend and backend always contain the same polygon data.
 
 ---
 
-### 4. Image Management
+# Result
 
-Added image deletion functionality.
+After implementing these improvements:
 
-**Solution:**
-Implemented a Django delete endpoint that removes the image from the database and media storage. Related annotations are automatically removed using Django's CASCADE relationship.
+- Annotation saving works correctly.
+- Deleted polygons are permanently removed.
+- Refreshing the page no longer restores deleted polygons.
+- Frontend and backend remain synchronized.
 
+---
 
+# Image Management
 
-### Root Cause
+## Completed
 
-The backend validation used:
+- Added image deletion functionality.
+- Implemented image delete endpoint in Django.
+- Removed image records from the database.
+- Removed image files from media storage.
+- Automatically removed related annotations using Django Cascade Delete.
+- Added delete action inside the thumbnail slider.
+- Displayed a delete icon when hovering over image thumbnails.
 
-python
-if not image_id or not points:
+---
 
+## Challenges Faced
 
-### Solution
+Initially, uploaded images could not be removed from the application.
 
-md
-### Solution
+Deleting an image from the frontend still left the image stored inside the backend database.
 
-Updated the validation to:
+Related annotations also remained inside the database.
 
-python
-if image_id is None or points is None:
+---
 
-### Result
+## Solution
 
-md
-### Result
+Implemented a dedicated Django Delete API.
 
-- ✅ Annotation save works correctly.
-- ✅ Deleted polygons are permanently removed.
-- ✅ Database stays synchronized with the frontend.
-- ✅ Refresh no longer restores deleted annotations. 
+Configured Django to:
 
-## PolygonCanvas: Fixed image fitting issue to ensure images scale correctly within the container.
-## Annotation Improvements
+- Remove the image record.
+- Delete the physical media file.
+- Automatically delete all related annotations through the `CASCADE` relationship.
 
-- Improved image fitting inside the annotation canvas while preserving the original aspect ratio.
-- Centered images dynamically within the canvas.
+Integrated the API with the frontend so deleting a thumbnail immediately removes it from both the UI and the backend.
+
+---
+
+# Zoom Improvements
+
+## Completed
+
+- Added Zoom In functionality.
+- Added Zoom Out functionality.
+- Improved annotation workflow while zooming.
+- Kept the image centered during zoom operations.
+
+---
+
+## Challenges Faced
+
+Initially, zooming the annotation canvas caused the image to shift away from the center because scaling was applied directly to the Stage.
+
+---
+
+## Solution
+
+Moved the scaling logic from the Stage to the Layer.
+
+Adjusted the positioning dynamically so the image always remains centered while zooming.
+
+---
+
+# PolygonCanvas Improvements
+
+## Completed
+
+- Improved image fitting inside the annotation canvas.
+- Preserved the original image aspect ratio.
+- Centered images dynamically inside the canvas.
 - Restricted polygon drawing to the image area only.
-- Added validation to prevent saving invalid polygons (minimum 3 points required).
-- Improved responsive canvas sizing for different screen widths.
+- Added validation to prevent invalid polygons.
+- Improved responsive canvas sizing.
+- Improved image positioning.
+- Improved drawing accuracy.
+
+---
+
+## Challenges Faced
+
+Initially, uploaded images were stretched inside the canvas.
+
+Different image sizes caused inconsistent positioning.
+
+Users could also place annotation points outside the image area.
+
+Additionally, polygons containing fewer than three points could still be completed.
+
+---
+
+## Solution
+
+Calculated the image scaling ratio dynamically.
+
+Centered the image inside the canvas after scaling.
+
+Restricted mouse clicks outside the image boundary.
+
+Added validation to ensure a polygon contains at least three points before it can be completed.
+
+Improved responsive canvas sizing so different screen widths are handled correctly.
+
+---
+
+# Project Refactoring
+
+## Completed
+
+- Refactored the Annotation page.
+- Extracted reusable UI components.
+- Reduced duplicate code.
+- Improved project structure.
+- Improved maintainability.
+- Increased component reusability.
+
+Created reusable components including:
+
+- ThumbnailSlider
+- UploadSection
+- NavigationSection
+
+---
+
+## Challenges Faced
+
+Initially, almost the entire Annotation page was implemented inside a single file.
+
+As more features were added, the component became difficult to maintain and understand.
+
+Updating one feature often required scrolling through hundreds of lines of code.
+
+---
+
+## Solution
+
+Separated the Annotation page into reusable components.
+
+Each component now has a single responsibility.
+
+This makes the project:
+
+- Easier to maintain.
+- Easier to debug.
+- Easier to extend.
+- More scalable.
+- Cleaner to read.
+
+---
+
+# Final Project Summary
+
+## Features
+
+### Authentication
+
+- Admin Login
+- SQLite Authentication
+- Axios Integration
+
+---
+
+### Task Board
+
+- Create Task
+- Read Task
+- Update Task
+- Delete Task
+- Drag & Drop
+- Date Filtering
+- React Context API
+- Serial Numbers
+- Empty State
+
+---
+
+### Dashboard
+
+- Reusable Dashboard Layout
+- Sidebar
+- Navbar
+- Dynamic Page Titles
+
+---
+
+### Annotation
+
+- Image Upload
+- Image Viewer
+- Previous / Next Navigation
+- Thumbnail Slider
+- Polygon Drawing
+- Undo Point
+- Finish Polygon
+- Clear Polygon
+- Delete Polygon
+- Save Annotation
+- Load Annotation
+- Zoom In
+- Zoom Out
+- Annotation Persistence
+- Responsive Canvas
+- Image Delete
+- Backend Synchronization
+
+---
+
+## Backend
+
+- Django
+- Django ORM
+- SQLite
+- Media File Handling
+- Annotation API
+- Image Upload API
+- Image Delete API
+- Annotation Save API
+- Annotation Retrieval API
+
+---
+
+## Testing
+
+Throughout development, every backend API was verified using **Postman** before integrating it with the frontend.
+
+Verified endpoints include:
+
+- Login API
+- Create Task API
+- Get Task API
+- Image Upload API
+- Image List API
+- Save Annotation API
+- Get Annotation API
+- Delete Annotation API
+- Delete Image API
+
+This ensured that each API functioned correctly before frontend integration, making debugging easier and reducing integration issues.
