@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ovtijt(itf0eainsv5*#cno!y%65(r5aag&@yz*0n4x6z&8pto
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "MDkhairozzaman.pythonanywhere.com",
+    "mdkhairozzaman.pythonanywhere.com",
     "localhost",
     "127.0.0.1",
 ]
@@ -130,5 +130,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://404-project-not-found.vercel.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
     "https://404-project-not-found.vercel.app",
 ]
