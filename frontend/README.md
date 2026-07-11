@@ -345,7 +345,7 @@ admin123
 
 Frontend:
 
-(Add Vercel URL)
+(Vercel URL) : 404-project-not-found-287l.vercel.app
 
 ---
 
