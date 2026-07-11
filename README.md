@@ -466,3 +466,35 @@ When switching between images, previously saved annotations were not displayed e
 ### Solution
 
 I refactored the annotation flow by lifting the polygon state to the parent component and passing it to the canvas through props. Whenever the selected image changes, the frontend fetches the saved annotations from the backend and updates the canvas state. This keeps the UI synchronized with the database and ensures that saved polygons are rendered correctly when revisiting an image.
+
+### Issue: Deleted annotations reappeared after page refresh
+
+After deleting all polygons and saving, the frontend showed no annotations. However, after refreshing the page, the deleted annotations were loaded again from the database.
+
+### Root Cause
+
+The backend validation used:
+
+```python
+if not image_id or not points:
+
+
+### Solution
+
+```md
+### Solution
+
+Updated the validation to:
+
+```python
+if image_id is None or points is None:
+
+### Result
+
+```md
+### Result
+
+- ✅ Annotation save works correctly.
+- ✅ Deleted polygons are permanently removed.
+- ✅ Database stays synchronized with the frontend.
+- ✅ Refresh no longer restores deleted annotations.
