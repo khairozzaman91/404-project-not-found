@@ -41,6 +41,10 @@ const PolygonCanvas = forwardRef<
   const containerRef = useRef<HTMLDivElement>(null);
   const [stageSize, setStageSize] = useState({ width: 580, height: 420 });
   const [imageSize, setImageSize] = useState({ width: 580, height: 400 });
+  const [imagePosition, setImagePosition] = useState({
+      x: 0,
+      y: 0,
+    });
   const [scale, setScale] = useState(1);
 
   // Stage size update
@@ -71,61 +75,90 @@ const PolygonCanvas = forwardRef<
     const img = new window.Image();
     img.src = imageUrl;
 
-    img.onload = () => {
-      setImage(img);
+    
+        img.onload = () => {
+          setImage(img);
 
-      const ratio = Math.min(
-        stageSize.width / img.width,
-        stageSize.height / img.height
-      );
+          const ratio = Math.min(
+            stageSize.width / img.width,
+            stageSize.height / img.height
+          );
 
-      setImageSize({
-        width: img.width * ratio,
-        height: img.height * ratio,
-      });
-    };
+          const width = img.width * ratio;
+          const height = img.height * ratio;
+
+          setImageSize({
+            width,
+            height,
+          });
+
+          setImagePosition({
+            x: (stageSize.width - width) / 2,
+            y: (stageSize.height - height) / 2,
+          });
+        };
+
   }, [imageUrl, stageSize]);
 
   useEffect(() => {
     setCanvasPolygons(externalPolygons);
   }, [externalPolygons]);
 
-  const handleStageClick = (e: any) => {
-    if (!isDrawing) return;
-    const stage = e.target.getStage();
-    const pointer = stage.getPointerPosition();
-    if (!pointer) return;
+        const handleStageClick = (e: any) => {
+          if (!isDrawing) return;
 
-    setCurrentPoints((prev) => [...prev, pointer.x, pointer.y]);
-  };
+          const stage = e.target.getStage();
+          const pointer = stage.getPointerPosition();
 
-  const finishPolygon = () => {
-    const updated = [...canvasPolygons, currentPoints];
-    setCanvasPolygons(updated);
-    onPolygonsChange?.(updated);
-    setCurrentPoints([]);
-  };
+          if (!pointer) return;
 
-  useImperativeHandle(ref, () => ({
-    finishPolygon,
-    undoPoint() {
-      setCurrentPoints((prev) => prev.slice(0, prev.length - 2));
-    },
-    clearCurrentPolygon() {
-      setCurrentPoints([]);
-    },
-    deletePolygon(index: number) {
-      const updated = canvasPolygons.filter((_, i) => i !== index);
-      setCanvasPolygons(updated);
-      onPolygonsChange?.(updated);
-    },
-    zoomIn() {
-      setScale((prev) => Math.min(prev + 0.2, 3));
-    },
-    zoomOut() {
-      setScale((prev) => Math.max(prev - 0.2, 0.5));
-    },
-  }));
+          if (
+            pointer.x < imagePosition.x ||
+            pointer.x > imagePosition.x + imageSize.width ||
+            pointer.y < imagePosition.y ||
+            pointer.y > imagePosition.y + imageSize.height
+          ) {
+            return;
+          }
+
+          setCurrentPoints((prev) => [
+            ...prev,
+            pointer.x,
+            pointer.y,
+          ]);
+        };
+
+      const finishPolygon = () => {
+            if (currentPoints.length < 6) return;
+
+            const updated = [...canvasPolygons, currentPoints];
+
+            setCanvasPolygons(updated);
+            onPolygonsChange?.(updated);
+
+            setCurrentPoints([]);
+          };
+
+      useImperativeHandle(ref, () => ({
+        finishPolygon,
+        undoPoint() {
+          setCurrentPoints((prev) => prev.slice(0, prev.length - 2));
+        },
+        clearCurrentPolygon() {
+          setCurrentPoints([]);
+        },
+        deletePolygon(index: number) {
+          const updated = canvasPolygons.filter((_, i) => i !== index);
+          setCanvasPolygons(updated);
+          onPolygonsChange?.(updated);
+        },
+        zoomIn() {
+          setScale((prev) => Math.min(prev + 0.2, 3));
+        },
+        zoomOut() {
+          setScale((prev) => Math.max(prev - 0.2, 0.5));
+        },
+      }));
 
   return (
     <div 
@@ -144,12 +177,12 @@ const PolygonCanvas = forwardRef<
           y={(stageSize.height - stageSize.height * scale) / 2}
         >
           {image && (
-            <KonvaImage
+           <KonvaImage
               image={image}
               width={imageSize.width}
               height={imageSize.height}
-              x={(stageSize.width - imageSize.width) / 2}
-              y={(stageSize.height - imageSize.height) / 2}
+              x={imagePosition.x}
+              y={imagePosition.y}
               listening={false}
             />
           )}
