@@ -77,18 +77,21 @@ import {
           };
 
             const finishPolygon = () => {
-              if (currentPoints.length < 6) return;
+                const updated = [...canvasPolygons, currentPoints];
 
-              setCanvasPolygons((prev) => {
-                const updated = [...prev, currentPoints];
+              console.log("Updated polygons:", updated);
 
-                onPolygonsChange?.(updated);
+              setCanvasPolygons(updated);
 
-                return updated;
-              });
+              onPolygonsChange?.(updated);
 
               setCurrentPoints([]);
-            };
+              }    
+
+             
+
+
+
 
             useImperativeHandle(ref, () => ({
                         finishPolygon,
@@ -103,15 +106,15 @@ import {
                           setCurrentPoints([]);
                         },
 
-                        deletePolygon(index: number) {
-                          setCanvasPolygons((prev) => {
-                            const updated = prev.filter((_, i) => i !== index);
+                     deletePolygon(index: number) {
+                        const updated = canvasPolygons.filter(
+                          (_, i) => i !== index
+                        );
 
-                            onPolygonsChange?.(updated);
+                        setCanvasPolygons(updated);
 
-                            return updated;
-                          });
-                        },
+                        onPolygonsChange?.(updated);
+                      },
 
                         zoomIn() {
                           setScale((prev) => Math.min(prev + 0.2, 3));

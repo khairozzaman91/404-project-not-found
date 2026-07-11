@@ -26,7 +26,7 @@ export const uploadImage = async (file: File) => {
 
 export const saveAnnotation = async (
   imageId: number,
-  points: number[]
+  points: number[][]
 ) => {
   const response = await axios.post(
     `${API_URL}/annotations/`,

@@ -12,134 +12,145 @@ import {
 
 
 function AnnotationPage() {
-  const [images, setImages] = useState<any[]>([]);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<PolygonCanvasRef>(null);
-  const [polygonList, setPolygonList] = useState<number[][]>([]);
-  const [selectedPolygon, setSelectedPolygon] = useState<number | null>(null);
+      const [images, setImages] = useState<any[]>([]);
+      const [selectedImage, setSelectedImage] = useState<any>(null);
+      const [isDrawing, setIsDrawing] = useState(false);
+      
+      const fileInputRef = useRef<HTMLInputElement>(null);
+      const canvasRef = useRef<PolygonCanvasRef>(null);
+      const [polygonList, setPolygonList] = useState<number[][]>([]);
+      const [selectedPolygon, setSelectedPolygon] = useState<number | null>(null);
 
-  const loadImages = async () => {
-    try {
-      const data = await getImages();
-      setImages(data);
+        useEffect(() => {
+            console.log("polygonList:", polygonList);
+          }, [polygonList]);
 
-      if (data.length > 0) {
-        setSelectedImage(data[0]);
+      const loadImages = async () => {
+        try {
+          const data = await getImages();
+          setImages(data);
+
+          if (data.length > 0) {
+            setSelectedImage(data[0]);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      useEffect(() => {
+        loadImages();
+      }, []);
+
+
+      useEffect(() => {
+      if (selectedImage) {
+        loadAnnotations(selectedImage.id);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    loadImages();
-  }, []);
+    }, [selectedImage]);
 
 
-  useEffect(() => {
-  if (selectedImage) {
-    loadAnnotations(selectedImage.id);
-  }
-}, [selectedImage]);
+      const handleUpload = async (
+        event: React.ChangeEvent<HTMLInputElement>
+      ) => {
+        const file = event.target.files?.[0];
+
+        if (!file) return;
+
+        try {
+          await uploadImage(file);
+          await loadImages();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+          const handlePrevious = () => {
+          if (!selectedImage) return;
+
+          const currentIndex = images.findIndex(
+            (img) => img.id === selectedImage.id
+          );
+
+          if (currentIndex > 0) {
+            setSelectedImage(images[currentIndex - 1]);
+            setSelectedPolygon(null);
+            setPolygonList([]);
+          }
+        };
+
+          const handleNext = () => {
+            if (!selectedImage) return;
+
+            const currentIndex = images.findIndex(
+              (img) => img.id === selectedImage.id
+            );
+
+            if (currentIndex < images.length - 1) {
+              setSelectedImage(images[currentIndex + 1]);
+              setSelectedPolygon(null);
+              setPolygonList([]);
+            }
+          };
+
+    const handleDrawPolygon = () => {
+      if (!isDrawing) {
+        setIsDrawing(true);
+        return;
+      }
+
+      canvasRef.current?.finishPolygon();
+      setIsDrawing(false);
+    };
+
+    const handleUndoPoint = () => {
+      canvasRef.current?.undoPoint();
+    };
+
+    const handleClearPolygon = () => {
+      canvasRef.current?.clearCurrentPolygon();
+    };
+
+    const handleDeletePolygon = () => {
+      if (selectedPolygon === null) return;
+
+      canvasRef.current?.deletePolygon(selectedPolygon);
+       console.log("After delete:", polygonList);
+      setSelectedPolygon(null);
+    };
+
+    const handleZoomIn = () => {
+      canvasRef.current?.zoomIn();
+    };
+
+    const handleZoomOut = () => {
+      canvasRef.current?.zoomOut();
+    };
 
 
-  const handleUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
+        const handleSaveAnnotation = async () => {
+          if (!selectedImage) return;
 
-    if (!file) return;
+          try {
+            await saveAnnotation(
+              selectedImage.id,
+              polygonList
+            );
 
-    try {
-      await uploadImage(file);
-      await loadImages();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+            alert("Annotations saved successfully!");
 
-  const handlePrevious = () => {
-  if (!selectedImage) return;
-
-  const currentIndex = images.findIndex(
-    (img) => img.id === selectedImage.id
-  );
-
-  if (currentIndex > 0) {
-    setSelectedImage(images[currentIndex - 1]);
-    
-  }
-};
-
-const handleNext = () => {
-  if (!selectedImage) return;
-
-  const currentIndex = images.findIndex(
-    (img) => img.id === selectedImage.id
-  );
-
-  if (currentIndex < images.length - 1) {
-    setSelectedImage(images[currentIndex + 1]);
-    
-  }
-};
-
-const handleDrawPolygon = () => {
-  if (!isDrawing) {
-    setIsDrawing(true);
-    return;
-  }
-
-  canvasRef.current?.finishPolygon();
-  setIsDrawing(false);
-};
-
-const handleUndoPoint = () => {
-  canvasRef.current?.undoPoint();
-};
-
-const handleClearPolygon = () => {
-  canvasRef.current?.clearCurrentPolygon();
-};
-
-const handleDeletePolygon = () => {
-  if (selectedPolygon === null) return;
-
-  canvasRef.current?.deletePolygon(selectedPolygon);
-  setSelectedPolygon(null);
-};
-
-const handleZoomIn = () => {
-  canvasRef.current?.zoomIn();
-};
-
-const handleZoomOut = () => {
-  canvasRef.current?.zoomOut();
-};
-
-
-const handleSaveAnnotation = async () => {
-  if (!selectedImage) return;
-
-  try {
-    for (const polygon of polygonList) {
-      await saveAnnotation(selectedImage.id, polygon);
-    }
-
-    alert("Annotations saved successfully!");
-  } catch (error) {
-    console.error(error);
-    alert("Failed to save annotations.");
-  }
-};
+            await loadAnnotations(selectedImage.id);
+          } catch (error) {
+            console.error(error);
+            alert("Failed to save annotations.");
+          }
+        };
 
 
     const loadAnnotations = async (imageId: number) => {
       try {
         const data = await getAnnotations(imageId);
+        console.log("DB Response:", data);
 
         setPolygonList(
           data.map((item: any) => item.points)
@@ -315,7 +326,10 @@ const handleSaveAnnotation = async () => {
             {images.map((image) => (
               <div
                 key={image.id}
-                onClick={() => setSelectedImage(image)}
+                onClick={() => {
+                    setSelectedImage(image);
+                    setSelectedPolygon(null);
+                  }}
                 className={`h-12 w-12 shrink-0 cursor-pointer overflow-hidden rounded border-2 transition ${
                   selectedImage?.id === image.id
                     ? "border-blue-600"
