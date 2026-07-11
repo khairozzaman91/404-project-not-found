@@ -497,4 +497,6 @@ if image_id is None or points is None:
 - ✅ Annotation save works correctly.
 - ✅ Deleted polygons are permanently removed.
 - ✅ Database stays synchronized with the frontend.
-- ✅ Refresh no longer restores deleted annotations.
+- ✅ Refresh no longer restores deleted annotations. 
+
+## PolygonCanvas: Fixed image fitting issue to ensure images scale correctly within the container.
