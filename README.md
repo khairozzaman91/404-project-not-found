@@ -1355,3 +1355,52 @@ Verified endpoints include:
 - Delete Image API
 
 This ensured that each API functioned correctly before frontend integration, making debugging easier and reducing integration issues.
+
+
+# Environment
+
+## Frontend
+
+- Node.js: v24.15.0
+- npm: 11.12.1
+
+Run:
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## Backend
+
+- Python: 3.12.0
+- Django: 6.0.6
+
+Run:
+
+```bash
+python -m venv venv
+
+
+# Windows
+venv\Scripts\activate
+
+# macOS/Linux
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python manage.py migrate
+
+python manage.py runserver
+```
+
+---
+
+## Demo Account
+
+Email: `admin@404project.com`
+
+Password: `admin123`
