@@ -471,6 +471,43 @@ I refactored the annotation flow by lifting the polygon state to the parent comp
 
 After deleting all polygons and saving, the frontend showed no annotations. However, after refreshing the page, the deleted annotations were loaded again from the database.
 
+
+## Challenges Faced
+
+### 1. Duplicate Annotation Records
+
+Initially, every save operation created duplicate annotation records instead of replacing the previous ones.
+
+**Solution:**
+Implemented logic in the backend to remove existing annotations for the selected image before saving the updated polygons.
+
+---
+
+### 2. Empty Annotation Handling
+
+Deleting all polygons resulted in a validation error because an empty array was rejected.
+
+**Solution:**
+Updated backend validation to accept an empty polygon list while still validating required request fields.
+
+---
+
+### 3. Polygon Synchronization
+
+Deleting polygons from the frontend did not immediately synchronize with the backend.
+
+**Solution:**
+Improved state synchronization between the React canvas component and backend API by updating the polygon state before saving.
+
+---
+
+### 4. Image Management
+
+Added image deletion functionality.
+
+**Solution:**
+Implemented a Django delete endpoint that removes the image from the database and media storage. Related annotations are automatically removed using Django's CASCADE relationship.
+
 ### Root Cause
 
 The backend validation used:
