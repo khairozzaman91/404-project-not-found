@@ -5,6 +5,10 @@ interface ThumbnailSliderProps {
   onDelete: (id: number) => void;
 }
 
+
+
+
+
 export default function ThumbnailSlider({
   images,
   selectedImage,
@@ -19,7 +23,7 @@ export default function ThumbnailSlider({
         return (
           <div
             key={img.id}
-            className="group relative flex-shrink-0"
+            className="group relative shrink-0"
           >
             <img
               src={img.image}
@@ -35,15 +39,17 @@ export default function ThumbnailSlider({
               `}
             />
 
-          <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(img.id);
-          }}
-          className="absolute top-1 right-1 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white"
-        >
-          🗑️
-        </button>
+           {isSelected && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(img.id);
+                  }}
+                  className="absolute top-1 right-1 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white"
+                >
+                  🗑️
+                </button>
+              )}
           </div>
         );
       })}
