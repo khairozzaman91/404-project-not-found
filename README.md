@@ -1404,3 +1404,23 @@ python manage.py runserver
 Email: `admin@404project.com`
 
 Password: `admin123`
+
+## Deployment Issues & Fixes
+
+During deployment, the frontend was successfully hosted on Vercel, but the backend API initially failed due to production configuration issues.
+
+### Problems
+- 404 API errors from Vercel
+- 500 Internal Server Errors
+- Missing production domain in `ALLOWED_HOSTS`
+- CORS requests blocked
+- Frontend unable to communicate with Django backend
+
+### Solutions
+- Added the production domain to `ALLOWED_HOSTS`
+- Configured `CORS_ALLOWED_ORIGINS` with the Vercel URL
+- Verified API endpoints
+- Redeployed the Django application on PythonAnywhere
+- Tested all CRUD APIs after deployment
+
+After these changes, the frontend and backend communicated successfully.
