@@ -104,38 +104,33 @@ const PolygonCanvas = forwardRef<
     setCanvasPolygons(externalPolygons);
   }, [externalPolygons]);
 
-        const handleStageClick = (e: any) => {
-            if (!isDrawing) return;
+       
 
-            const stage = e.target.getStage();
-            const layer = e.target.getLayer();
+   const handleStageClick = (e: any) => {
+              if (!isDrawing) return;
 
-            if (!stage || !layer) return;
+              const stage = e.target.getStage();
+              if (!stage) return;
 
-            const transform = layer.getAbsoluteTransform().copy();
-            transform.invert();
+              const pos = stage.getPointerPosition();
+              if (!pos) return;
 
-            const pos = stage.getPointerPosition();
+              const pointer = {
+                x: (pos.x - (stageSize.width - stageSize.width * scale) / 2) / scale,
+                y: (pos.y - (stageSize.height - stageSize.height * scale) / 2) / scale,
+              };
 
-            if (!pos) return;
+              if (
+                pointer.x < imagePosition.x ||
+                pointer.x > imagePosition.x + imageSize.width ||
+                pointer.y < imagePosition.y ||
+                pointer.y > imagePosition.y + imageSize.height
+              ) {
+                return;
+              }
 
-            const pointer = transform.point(pos);
-
-            if (
-              pointer.x < imagePosition.x ||
-              pointer.x > imagePosition.x + imageSize.width ||
-              pointer.y < imagePosition.y ||
-              pointer.y > imagePosition.y + imageSize.height
-            ) {
-              return;
-            }
-
-            setCurrentPoints((prev) => [
-              ...prev,
-              pointer.x,
-              pointer.y,
-            ]);
-          };
+              setCurrentPoints((prev) => [...prev, pointer.x, pointer.y]);
+            };
 
       const finishPolygon = () => {
             if (currentPoints.length < 6) return;
@@ -197,14 +192,15 @@ const PolygonCanvas = forwardRef<
           )}
 
           {canvasPolygons.map((polygon, index) => (
-            <Line
-              key={index}
-              points={polygon}
-              closed
-              stroke="red"
-              strokeWidth={2}
-              fill="rgba(255,0,0,0.25)"
-            />
+          <Line
+            key={index}
+            listening={false}
+            points={polygon}
+            closed
+            stroke="red"
+            strokeWidth={2}
+            fill="rgba(255,0,0,0.25)"
+          />
           ))}
 
           {currentPoints.length >= 2 && (
@@ -216,6 +212,7 @@ const PolygonCanvas = forwardRef<
             return (
               <Circle
                 key={index}
+                listening={false}
                 x={currentPoints[index]}
                 y={currentPoints[index + 1]}
                 radius={4}
