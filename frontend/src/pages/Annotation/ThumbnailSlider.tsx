@@ -35,33 +35,15 @@ export default function ThumbnailSlider({
               `}
             />
 
-            {isSelected && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(img.id);
-                }}
-                className="
-                  absolute
-                  top-1
-                  right-1
-                  hidden
-                  h-6
-                  w-6
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-red-600
-                  text-xs
-                  text-white
-                  shadow
-                  group-hover:flex
-                "
-                title="Delete Image"
-              >
-                🗑️
-              </button>
-            )}
+          <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(img.id);
+          }}
+          className="absolute top-1 right-1 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white"
+        >
+          🗑️
+        </button>
           </div>
         );
       })}
