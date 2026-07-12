@@ -105,28 +105,37 @@ const PolygonCanvas = forwardRef<
   }, [externalPolygons]);
 
         const handleStageClick = (e: any) => {
-          if (!isDrawing) return;
+            if (!isDrawing) return;
 
-          const stage = e.target.getStage();
-          const pointer = stage.getPointerPosition();
+            const stage = e.target.getStage();
+            const layer = e.target.getLayer();
 
-          if (!pointer) return;
+            if (!stage || !layer) return;
 
-          if (
-            pointer.x < imagePosition.x ||
-            pointer.x > imagePosition.x + imageSize.width ||
-            pointer.y < imagePosition.y ||
-            pointer.y > imagePosition.y + imageSize.height
-          ) {
-            return;
-          }
+            const transform = layer.getAbsoluteTransform().copy();
+            transform.invert();
 
-          setCurrentPoints((prev) => [
-            ...prev,
-            pointer.x,
-            pointer.y,
-          ]);
-        };
+            const pos = stage.getPointerPosition();
+
+            if (!pos) return;
+
+            const pointer = transform.point(pos);
+
+            if (
+              pointer.x < imagePosition.x ||
+              pointer.x > imagePosition.x + imageSize.width ||
+              pointer.y < imagePosition.y ||
+              pointer.y > imagePosition.y + imageSize.height
+            ) {
+              return;
+            }
+
+            setCurrentPoints((prev) => [
+              ...prev,
+              pointer.x,
+              pointer.y,
+            ]);
+          };
 
       const finishPolygon = () => {
             if (currentPoints.length < 6) return;
