@@ -18,6 +18,7 @@ urlpatterns = [
         ImageDeleteView.as_view(),
         name="image-delete",
     ),
+   
 
     path(
         "annotations/",

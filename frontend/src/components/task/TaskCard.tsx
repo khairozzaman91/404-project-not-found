@@ -31,7 +31,6 @@ function TaskCard({
   const style = {
     transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0.6 : 1,
-    cursor: "grab",
   };
 
   const formattedDate = new Date(dueDate).toLocaleDateString("en-US", {
@@ -44,55 +43,54 @@ function TaskCard({
     <div
       ref={setNodeRef}
       style={style}
-      {...listeners}
-      {...attributes}
       className={`
+        group
         rounded-lg
         border
+        bg-white
         p-3
         transition-all
         ${
           isDragging
-            ? "bg-gray-300 border-gray-500 shadow-xl scale-[1.02]"
-            : "bg-white border-slate-200 shadow hover:shadow-md"
+            ? "border-gray-500 bg-gray-300 shadow-xl scale-[1.02]"
+            : "border-slate-200 shadow hover:shadow-md"
         }
       `}
     >
-      {/* Serial + Title */}
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-semibold text-slate-500">
-          #{serial}
-        </span>
+      {/* Drag Handle */}
+      <div
+        {...listeners}
+        {...attributes}
+        className="cursor-grab"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-slate-500">
+            #{serial}
+          </span>
 
-        <h3 className="flex-1 text-base font-semibold text-slate-800">
-          {title}
-        </h3>
+          <h3 className="flex-1 text-base font-semibold text-slate-800">
+            {title}
+          </h3>
+        </div>
       </div>
 
-      {/* Date + Actions */}
-      <div
-        className="mt-2 flex items-center justify-between"
-        onPointerDown={(e) => e.stopPropagation()}
-      >
-        <p className="flex items-center gap-1 text-xs text-slate-500">
+      {/* Footer */}
+      <div className="mt-2 flex items-center justify-between">
+        <p className="text-xs text-slate-500">
           📅 {formattedDate}
         </p>
 
-        <div className="flex items-center gap-3">
+        <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
           <button
-            type="button"
             onClick={() => onEdit(id)}
-            className="text-lg text-blue-600 transition hover:text-blue-800"
-            title="Edit Task"
+            className="text-blue-600 hover:text-blue-800"
           >
             ✏️
           </button>
 
           <button
-            type="button"
             onClick={() => onDelete(id)}
-            className="text-lg text-red-600 transition hover:text-red-800"
-            title="Delete Task"
+            className="text-red-600 hover:text-red-800"
           >
             🗑️
           </button>
