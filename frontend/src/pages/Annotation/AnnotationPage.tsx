@@ -129,16 +129,29 @@ function AnnotationPage() {
 
 
     const handleDeleteImage = async (imageId: number) => {
-          const confirmDelete = window.confirm(
-            "Delete this image?"
-          );
+          const confirmDelete = window.confirm("Delete this image?");
 
           if (!confirmDelete) return;
 
           try {
             await deleteImage(imageId);
 
-            await loadImages();
+            const updatedImages = images.filter(
+              (img) => img.id !== imageId
+            );
+
+            setImages(updatedImages);
+
+            if (updatedImages.length > 0) {
+              const nextImage = updatedImages[0];
+              setSelectedImage(nextImage);
+
+              // Load annotations for the newly selected image
+              await loadAnnotations(nextImage.id);
+            } else {
+              setSelectedImage(null);
+              setPolygonList([]);
+            }
           } catch (error) {
             console.error(error);
             alert("Failed to delete image.");
