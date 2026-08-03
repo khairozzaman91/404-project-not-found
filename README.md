@@ -313,19 +313,6 @@ This project strengthened my practical understanding of:
 
 ---
 
-# 🔮 Future Improvements
-
-- JWT Authentication
-- User Management
-- Role-Based Access Control (RBAC)
-- PostgreSQL Migration
-- Docker Support
-- CI/CD Pipeline
-- Unit Testing
-- Cloud Storage Integration
-- Real-time Collaboration
-
----
 
 # 👨‍💻 Author
 
